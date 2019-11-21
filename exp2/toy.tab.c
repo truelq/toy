@@ -72,11 +72,14 @@ extern int yylineno;
 extern char *yytext;
 extern FILE *yyin;
 char myerror[255];
-void yyerror(const char* fmt, ...);
-void display(struct node *,int);
 void myyyerror();
+extern "C"
+{	
+void yyerror(const char* fmt, ...);
+extern int yylex(void);
+}
 
-#line 80 "toy.tab.c" /* yacc.c:339  */
+#line 83 "toy.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -154,7 +157,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 19 "toy.y" /* yacc.c:355  */
+#line 22 "toy.y" /* yacc.c:355  */
 
 	int    type_int;
 	float  type_float;
@@ -162,7 +165,7 @@ union YYSTYPE
 	char   type_id[32];
 	struct node *ptr;
 
-#line 166 "toy.tab.c" /* yacc.c:355  */
+#line 169 "toy.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -193,7 +196,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 197 "toy.tab.c" /* yacc.c:358  */
+#line 200 "toy.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -496,14 +499,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    56,    56,    58,    59,    60,    61,    62,    64,    66,
-      67,    68,    69,    70,    72,    74,    75,    76,    77,    79,
-      80,    82,    84,    87,    88,    89,    91,    93,    94,    96,
-      97,    99,   100,   102,   103,   104,   105,   106,   107,   109,
-     110,   111,   113,   114,   115,   116,   117,   119,   120,   121,
-     122,   125,   126,   127,   128,   129,   130,   131,   132,   133,
-     134,   135,   136,   137,   138,   139,   140,   142,   143,   144,
-     146,   147
+       0,    59,    59,    61,    62,    63,    64,    65,    67,    69,
+      70,    71,    72,    73,    75,    77,    78,    79,    80,    82,
+      83,    85,    87,    90,    91,    92,    94,    96,    97,    99,
+     100,   102,   103,   105,   106,   107,   108,   109,   110,   112,
+     113,   114,   116,   117,   118,   119,   120,   122,   123,   124,
+     125,   128,   129,   130,   131,   132,   133,   134,   135,   136,
+     137,   138,   139,   140,   141,   142,   143,   145,   146,   147,
+     149,   150
 };
 #endif
 
@@ -1535,427 +1538,427 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 56 "toy.y" /* yacc.c:1646  */
-    { display((yyvsp[0].ptr),0);}
-#line 1541 "toy.tab.c" /* yacc.c:1646  */
+#line 59 "toy.y" /* yacc.c:1646  */
+    {/* display($1,0);*/semanticanalysis((yyvsp[0].ptr),0);}
+#line 1544 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 58 "toy.y" /* yacc.c:1646  */
+#line 61 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=NULL;}
-#line 1547 "toy.tab.c" /* yacc.c:1646  */
+#line 1550 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 59 "toy.y" /* yacc.c:1646  */
+#line 62 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(EXT_VAR_DEF,(yyvsp[-3].ptr),(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,yylineno);}
-#line 1553 "toy.tab.c" /* yacc.c:1646  */
+#line 1556 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 60 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(EXT_VAR_DEF,(yyvsp[-2].ptr),(yyvsp[-1].ptr),(yyvsp[-1].ptr),NULL,yylineno);}
-#line 1559 "toy.tab.c" /* yacc.c:1646  */
+#line 63 "toy.y" /* yacc.c:1646  */
+    {(yyval.ptr)=mknode(EXT_VAR_DEF,(yyvsp[-2].ptr),(yyvsp[-1].ptr),(yyvsp[0].ptr),NULL,yylineno);}
+#line 1562 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 61 "toy.y" /* yacc.c:1646  */
+#line 64 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(FUNC_DEF,(yyvsp[-4].ptr),(yyvsp[-3].ptr),(yyvsp[-2].ptr),(yyvsp[0].ptr),yylineno);}
-#line 1565 "toy.tab.c" /* yacc.c:1646  */
+#line 1568 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 62 "toy.y" /* yacc.c:1646  */
+#line 65 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(FUNC_DECLARE,(yyvsp[-3].ptr),(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,yylineno);}
-#line 1571 "toy.tab.c" /* yacc.c:1646  */
+#line 1574 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 64 "toy.y" /* yacc.c:1646  */
+#line 67 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(FUNC_DECLARE,(yyvsp[-5].ptr),(yyvsp[-4].ptr),(yyvsp[0].ptr),NULL,yylineno);sprintf(myerror," error in Func def");}
-#line 1577 "toy.tab.c" /* yacc.c:1646  */
+#line 1580 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 66 "toy.y" /* yacc.c:1646  */
+#line 69 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," Error : wrong  stmt");(yyval.ptr)=(yyvsp[0].ptr);myyyerror();}
-#line 1583 "toy.tab.c" /* yacc.c:1646  */
+#line 1586 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 67 "toy.y" /* yacc.c:1646  */
+#line 70 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," Error : wrong  stmt");(yyval.ptr)=(yyvsp[0].ptr);myyyerror();}
-#line 1589 "toy.tab.c" /* yacc.c:1646  */
+#line 1592 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 68 "toy.y" /* yacc.c:1646  */
+#line 71 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," Error : wrong  stmt");(yyval.ptr)=(yyvsp[0].ptr);myyyerror();}
-#line 1595 "toy.tab.c" /* yacc.c:1646  */
+#line 1598 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 69 "toy.y" /* yacc.c:1646  */
+#line 72 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," Error : wrong  stmt");(yyval.ptr)=(yyvsp[0].ptr);myyyerror();}
-#line 1601 "toy.tab.c" /* yacc.c:1646  */
+#line 1604 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 70 "toy.y" /* yacc.c:1646  */
+#line 73 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," Error : wrong ");(yyval.ptr)=(yyvsp[0].ptr);myyyerror();}
-#line 1607 "toy.tab.c" /* yacc.c:1646  */
+#line 1610 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 72 "toy.y" /* yacc.c:1646  */
+#line 75 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(TYPE,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));(yyval.ptr)->type=!strcmp((yyvsp[0].type_id),"int")?INT:!strcmp((yyvsp[0].type_id),"float")?FLOAT:CHAR;}
-#line 1613 "toy.tab.c" /* yacc.c:1646  */
+#line 1616 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 74 "toy.y" /* yacc.c:1646  */
+#line 77 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(DEC_LIST,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);}
-#line 1619 "toy.tab.c" /* yacc.c:1646  */
+#line 1622 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 75 "toy.y" /* yacc.c:1646  */
+#line 78 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(DEC_LIST,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);}
-#line 1625 "toy.tab.c" /* yacc.c:1646  */
+#line 1628 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 76 "toy.y" /* yacc.c:1646  */
+#line 79 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," too more ','");(yyval.ptr)=(yyvsp[0].ptr);myyyerror();}
-#line 1631 "toy.tab.c" /* yacc.c:1646  */
+#line 1634 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 77 "toy.y" /* yacc.c:1646  */
+#line 80 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," too more ','");(yyval.ptr)=NULL;myyyerror();}
-#line 1637 "toy.tab.c" /* yacc.c:1646  */
+#line 1640 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 79 "toy.y" /* yacc.c:1646  */
+#line 82 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=(yyvsp[0].ptr);}
-#line 1643 "toy.tab.c" /* yacc.c:1646  */
+#line 1646 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 80 "toy.y" /* yacc.c:1646  */
+#line 83 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(ASSIGNOP,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"ASSIGNOP");}
-#line 1649 "toy.tab.c" /* yacc.c:1646  */
+#line 1652 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 82 "toy.y" /* yacc.c:1646  */
+#line 85 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(ID,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));}
-#line 1655 "toy.tab.c" /* yacc.c:1646  */
+#line 1658 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 84 "toy.y" /* yacc.c:1646  */
+#line 87 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(FUNC_DEC,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[-3].type_id));}
-#line 1661 "toy.tab.c" /* yacc.c:1646  */
+#line 1664 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 87 "toy.y" /* yacc.c:1646  */
+#line 90 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=NULL;}
-#line 1667 "toy.tab.c" /* yacc.c:1646  */
+#line 1670 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 88 "toy.y" /* yacc.c:1646  */
+#line 91 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(PARAM_LIST,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);}
-#line 1673 "toy.tab.c" /* yacc.c:1646  */
+#line 1676 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 89 "toy.y" /* yacc.c:1646  */
+#line 92 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(PARAM_LIST,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);}
-#line 1679 "toy.tab.c" /* yacc.c:1646  */
+#line 1682 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 91 "toy.y" /* yacc.c:1646  */
+#line 94 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(PARAM_DEC,(yyvsp[-1].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);}
-#line 1685 "toy.tab.c" /* yacc.c:1646  */
+#line 1688 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 93 "toy.y" /* yacc.c:1646  */
+#line 96 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(COMP_STM,(yyvsp[-2].ptr),(yyvsp[-1].ptr),NULL,NULL,yylineno);}
-#line 1691 "toy.tab.c" /* yacc.c:1646  */
+#line 1694 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 94 "toy.y" /* yacc.c:1646  */
+#line 97 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," big error in Conmpst");(yyval.ptr)=NULL;}
-#line 1697 "toy.tab.c" /* yacc.c:1646  */
+#line 1700 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 96 "toy.y" /* yacc.c:1646  */
+#line 99 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=NULL; }
-#line 1703 "toy.tab.c" /* yacc.c:1646  */
+#line 1706 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 97 "toy.y" /* yacc.c:1646  */
+#line 100 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(VAR_DEF,(yyvsp[-3].ptr),(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,yylineno);}
-#line 1709 "toy.tab.c" /* yacc.c:1646  */
+#line 1712 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 99 "toy.y" /* yacc.c:1646  */
+#line 102 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=NULL; }
-#line 1715 "toy.tab.c" /* yacc.c:1646  */
+#line 1718 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 100 "toy.y" /* yacc.c:1646  */
+#line 103 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(STM_LIST,(yyvsp[-1].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);}
-#line 1721 "toy.tab.c" /* yacc.c:1646  */
+#line 1724 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 102 "toy.y" /* yacc.c:1646  */
+#line 105 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(EXP_STMT,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);}
-#line 1727 "toy.tab.c" /* yacc.c:1646  */
+#line 1730 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 103 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=(yyvsp[-1].ptr);}
-#line 1733 "toy.tab.c" /* yacc.c:1646  */
+#line 106 "toy.y" /* yacc.c:1646  */
+    {(yyval.ptr)=mknode(COMPT,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);}
+#line 1736 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 104 "toy.y" /* yacc.c:1646  */
+#line 107 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(RETURN,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);}
-#line 1739 "toy.tab.c" /* yacc.c:1646  */
+#line 1742 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 105 "toy.y" /* yacc.c:1646  */
+#line 108 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(IF_THEN,(yyvsp[-4].ptr),(yyvsp[-1].ptr),NULL,NULL,yylineno);}
-#line 1745 "toy.tab.c" /* yacc.c:1646  */
+#line 1748 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 106 "toy.y" /* yacc.c:1646  */
+#line 109 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(IF_THEN_ELSE,(yyvsp[-8].ptr),(yyvsp[-5].ptr),(yyvsp[-1].ptr),NULL,yylineno);}
-#line 1751 "toy.tab.c" /* yacc.c:1646  */
+#line 1754 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 107 "toy.y" /* yacc.c:1646  */
+#line 110 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(WHILE,(yyvsp[-4].ptr),(yyvsp[-1].ptr),NULL,NULL,yylineno);}
-#line 1757 "toy.tab.c" /* yacc.c:1646  */
+#line 1760 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 109 "toy.y" /* yacc.c:1646  */
+#line 112 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(RETURN,(yyvsp[-2].ptr),NULL,NULL,NULL,yylineno);}
-#line 1763 "toy.tab.c" /* yacc.c:1646  */
+#line 1766 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 110 "toy.y" /* yacc.c:1646  */
+#line 113 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," IF wrong");myyyerror();(yyval.ptr)=NULL;}
-#line 1769 "toy.tab.c" /* yacc.c:1646  */
+#line 1772 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 111 "toy.y" /* yacc.c:1646  */
+#line 114 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," WHILE wrong");(yyval.ptr)=mknode(WHILE,(yyvsp[-6].ptr),(yyvsp[-2].ptr),NULL,NULL,yylineno);}
-#line 1775 "toy.tab.c" /* yacc.c:1646  */
+#line 1778 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 113 "toy.y" /* yacc.c:1646  */
+#line 116 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(ASSIGNOP,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"ASSIGNOP");}
-#line 1781 "toy.tab.c" /* yacc.c:1646  */
+#line 1784 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 114 "toy.y" /* yacc.c:1646  */
+#line 117 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(PLUSASS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUSASS");}
-#line 1787 "toy.tab.c" /* yacc.c:1646  */
+#line 1790 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 115 "toy.y" /* yacc.c:1646  */
+#line 118 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(MINUSASS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUSASS");}
-#line 1793 "toy.tab.c" /* yacc.c:1646  */
+#line 1796 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 116 "toy.y" /* yacc.c:1646  */
+#line 119 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(STARASS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"STARASS");}
-#line 1799 "toy.tab.c" /* yacc.c:1646  */
+#line 1802 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 117 "toy.y" /* yacc.c:1646  */
+#line 120 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(DIVASS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"DIVASS");}
-#line 1805 "toy.tab.c" /* yacc.c:1646  */
+#line 1808 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 119 "toy.y" /* yacc.c:1646  */
+#line 122 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(UPLUSPLUS,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UPLUSPLUS");}
-#line 1811 "toy.tab.c" /* yacc.c:1646  */
+#line 1814 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 120 "toy.y" /* yacc.c:1646  */
+#line 123 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(UMINUSMINUS,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UMINUSMINUS");}
-#line 1817 "toy.tab.c" /* yacc.c:1646  */
+#line 1820 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 121 "toy.y" /* yacc.c:1646  */
+#line 124 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(PLUSPLUS,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUSPLUS");}
-#line 1823 "toy.tab.c" /* yacc.c:1646  */
+#line 1826 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 122 "toy.y" /* yacc.c:1646  */
+#line 125 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(MINUSMINUS,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUSMINUS");}
-#line 1829 "toy.tab.c" /* yacc.c:1646  */
+#line 1832 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 125 "toy.y" /* yacc.c:1646  */
+#line 128 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(AND,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"AND");}
-#line 1835 "toy.tab.c" /* yacc.c:1646  */
+#line 1838 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 126 "toy.y" /* yacc.c:1646  */
+#line 129 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(OR,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"OR");}
-#line 1841 "toy.tab.c" /* yacc.c:1646  */
+#line 1844 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 127 "toy.y" /* yacc.c:1646  */
+#line 130 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(RELOP,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[-1].type_id));}
-#line 1847 "toy.tab.c" /* yacc.c:1646  */
+#line 1850 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 128 "toy.y" /* yacc.c:1646  */
+#line 131 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(PLUS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUS");}
-#line 1853 "toy.tab.c" /* yacc.c:1646  */
+#line 1856 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 129 "toy.y" /* yacc.c:1646  */
+#line 132 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(MINUS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUS");}
-#line 1859 "toy.tab.c" /* yacc.c:1646  */
+#line 1862 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 130 "toy.y" /* yacc.c:1646  */
+#line 133 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(STAR,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"STAR");}
-#line 1865 "toy.tab.c" /* yacc.c:1646  */
+#line 1868 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 131 "toy.y" /* yacc.c:1646  */
+#line 134 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(DIV,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"DIV");}
-#line 1871 "toy.tab.c" /* yacc.c:1646  */
+#line 1874 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 132 "toy.y" /* yacc.c:1646  */
+#line 135 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=(yyvsp[-1].ptr);}
-#line 1877 "toy.tab.c" /* yacc.c:1646  */
+#line 1880 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 133 "toy.y" /* yacc.c:1646  */
+#line 136 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(UMINUS,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UMINUS");}
-#line 1883 "toy.tab.c" /* yacc.c:1646  */
+#line 1886 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 134 "toy.y" /* yacc.c:1646  */
+#line 137 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(NOT,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"NOT");}
-#line 1889 "toy.tab.c" /* yacc.c:1646  */
+#line 1892 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 135 "toy.y" /* yacc.c:1646  */
+#line 138 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(FUNC_CALL,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[-3].type_id));}
-#line 1895 "toy.tab.c" /* yacc.c:1646  */
+#line 1898 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 136 "toy.y" /* yacc.c:1646  */
+#line 139 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(ID,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));}
-#line 1901 "toy.tab.c" /* yacc.c:1646  */
+#line 1904 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 137 "toy.y" /* yacc.c:1646  */
+#line 140 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(INT,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_int=(yyvsp[0].type_int);(yyval.ptr)->type=INT;}
-#line 1907 "toy.tab.c" /* yacc.c:1646  */
+#line 1910 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 138 "toy.y" /* yacc.c:1646  */
+#line 141 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(FLOAT,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_float=(yyvsp[0].type_float);(yyval.ptr)->type=FLOAT;}
-#line 1913 "toy.tab.c" /* yacc.c:1646  */
+#line 1916 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 139 "toy.y" /* yacc.c:1646  */
+#line 142 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(CHAR,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_char=(yyvsp[0].type_char);(yyval.ptr)->type=CHAR;}
-#line 1919 "toy.tab.c" /* yacc.c:1646  */
+#line 1922 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 140 "toy.y" /* yacc.c:1646  */
+#line 143 "toy.y" /* yacc.c:1646  */
     {sprintf(myerror," error in Exp");(yyval.ptr)=NULL;myyyerror();}
-#line 1925 "toy.tab.c" /* yacc.c:1646  */
+#line 1928 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 142 "toy.y" /* yacc.c:1646  */
+#line 145 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=NULL;}
-#line 1931 "toy.tab.c" /* yacc.c:1646  */
+#line 1934 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 143 "toy.y" /* yacc.c:1646  */
+#line 146 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(ARGS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);}
-#line 1937 "toy.tab.c" /* yacc.c:1646  */
+#line 1940 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 144 "toy.y" /* yacc.c:1646  */
+#line 147 "toy.y" /* yacc.c:1646  */
     {(yyval.ptr)=mknode(ARGS,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);}
-#line 1943 "toy.tab.c" /* yacc.c:1646  */
+#line 1946 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 146 "toy.y" /* yacc.c:1646  */
+#line 149 "toy.y" /* yacc.c:1646  */
     {}
-#line 1949 "toy.tab.c" /* yacc.c:1646  */
+#line 1952 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 147 "toy.y" /* yacc.c:1646  */
+#line 150 "toy.y" /* yacc.c:1646  */
     {}
-#line 1955 "toy.tab.c" /* yacc.c:1646  */
+#line 1958 "toy.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1959 "toy.tab.c" /* yacc.c:1646  */
+#line 1962 "toy.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2190,7 +2193,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 148 "toy.y" /* yacc.c:1906  */
+#line 151 "toy.y" /* yacc.c:1906  */
 
 
 int main(int argc, char *argv[]){

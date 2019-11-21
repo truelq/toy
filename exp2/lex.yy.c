@@ -540,9 +540,14 @@ typedef union {
 	struct node *ptr;
 } YYLVAL;
 #define YYSTYPE yylval
+extern "C"
+{	
+	int yywrap(void);
+	int yylex(void);
+}
 //flex为bison提供行号信息
-#line 545 "lex.yy.c"
-#line 546 "lex.yy.c"
+#line 550 "lex.yy.c"
+#line 551 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -759,9 +764,9 @@ YY_DECL
 		}
 
 	{
-#line 28 "toy.l"
+#line 33 "toy.l"
 
-#line 765 "lex.yy.c"
+#line 770 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -830,205 +835,205 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 29 "toy.l"
+#line 34 "toy.l"
 {yylval.type_int=atoi(yytext); return INT;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 30 "toy.l"
+#line 35 "toy.l"
 {yylval.type_float=atof(yytext); return FLOAT;}
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 31 "toy.l"
+#line 36 "toy.l"
 {yylval.type_char=yytext[1]; return CHAR;/*这种情况下，正则需要简便处理*/}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 33 "toy.l"
+#line 38 "toy.l"
 {strcpy(yylval.type_id,  yytext);return TYPE;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 34 "toy.l"
+#line 39 "toy.l"
 {strcpy(yylval.type_id,  yytext);return TYPE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 35 "toy.l"
+#line 40 "toy.l"
 {strcpy(yylval.type_id,  yytext);return TYPE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 36 "toy.l"
+#line 41 "toy.l"
 {return RETURN;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 37 "toy.l"
+#line 42 "toy.l"
 {return IF;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 38 "toy.l"
+#line 43 "toy.l"
 {return ELSE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 39 "toy.l"
+#line 44 "toy.l"
 {return WHILE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 40 "toy.l"
+#line 45 "toy.l"
 {strcpy(yylval.type_id,  yytext); return ID;/*由于关键字的形式也符合表示符的规则，所以把关键字的处理全部放在标识符的前面，优先识别*/}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 42 "toy.l"
+#line 47 "toy.l"
 {return SEMI;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 43 "toy.l"
+#line 48 "toy.l"
 {return COMMA;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 44 "toy.l"
+#line 49 "toy.l"
 {strcpy(yylval.type_id, yytext);return RELOP;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 45 "toy.l"
+#line 50 "toy.l"
 {return ASSIGNOP;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 46 "toy.l"
+#line 51 "toy.l"
 {return PLUSASS;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 47 "toy.l"
+#line 52 "toy.l"
 {return MINUSASS;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 48 "toy.l"
+#line 53 "toy.l"
 {return STARASS;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 49 "toy.l"
+#line 54 "toy.l"
 {return DIVASS;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 50 "toy.l"
+#line 55 "toy.l"
 {/*模运算可能后期有点难，先不支持*/}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 52 "toy.l"
+#line 57 "toy.l"
 {return PLUSPLUS;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 53 "toy.l"
+#line 58 "toy.l"
 {return MINUSMINUS;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 55 "toy.l"
+#line 60 "toy.l"
 {return PLUS;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 56 "toy.l"
+#line 61 "toy.l"
 {return MINUS;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 57 "toy.l"
+#line 62 "toy.l"
 {return STAR;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 58 "toy.l"
+#line 63 "toy.l"
 {return DIV;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 59 "toy.l"
+#line 64 "toy.l"
 {}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 60 "toy.l"
+#line 65 "toy.l"
 {return AND;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 61 "toy.l"
+#line 66 "toy.l"
 {return OR;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 62 "toy.l"
+#line 67 "toy.l"
 {return NOT;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 63 "toy.l"
+#line 68 "toy.l"
 {return LP;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 64 "toy.l"
+#line 69 "toy.l"
 {return RP;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 65 "toy.l"
+#line 70 "toy.l"
 {return LC;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 66 "toy.l"
+#line 71 "toy.l"
 {return RC;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 67 "toy.l"
+#line 72 "toy.l"
 {printf("预定义或头文件\n");}
 	YY_BREAK
 case 36:
 /* rule 36 can match eol */
 YY_RULE_SETUP
-#line 70 "toy.l"
+#line 75 "toy.l"
 {yycolumn=1;return ENTER;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 71 "toy.l"
+#line 76 "toy.l"
 {/*printf("过滤空格等字符\n");*/}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 72 "toy.l"
+#line 77 "toy.l"
 {}
 	YY_BREAK
 case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
-#line 73 "toy.l"
+#line 78 "toy.l"
 {}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 75 "toy.l"
+#line 80 "toy.l"
 {printf("Error: Illegal ID \"%s\"\t at Line %d\n",yytext,yylineno);\
 					strcpy(yylval.type_id,  yytext); return ID;/*标识非法id,但是仍旧当做正常id进行分析*/}
 	YY_BREAK
@@ -1039,21 +1044,21 @@ YY_LINENO_REWIND_TO(yy_cp - 1);
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 77 "toy.l"
+#line 82 "toy.l"
 {printf("Warning: missing terminating ' character at Line %d\n",yylineno);yylval.type_char=yytext[1]; return CHAR;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 78 "toy.l"
+#line 83 "toy.l"
 {if(yytext[0]=='\''){printf("Error: missing terminating ' character at Line %d\n",yylineno);yylval.type_char=yytext[1]; return CHAR;}
 				else printf("Error: Mysterious character \"%s\"\t at Line %d\n",yytext,yylineno);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 80 "toy.l"
+#line 85 "toy.l"
 ECHO;
 	YY_BREAK
-#line 1057 "lex.yy.c"
+#line 1062 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2070,7 +2075,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 80 "toy.l"
+#line 85 "toy.l"
 
 
 /*

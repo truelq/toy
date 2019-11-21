@@ -1,7 +1,7 @@
 #include "def.h"
 struct node * mknode(int kind,struct node *first,struct node *second, struct node *third,struct node *fourth,int pos ) {
   struct node *T=(struct node *)malloc(sizeof(struct node));
-  T->kind=kind;
+  T->kind= node_kind(kind);
   T->ptr[0]=first;
   T->ptr[1]=second;
   T->ptr[2]=third;

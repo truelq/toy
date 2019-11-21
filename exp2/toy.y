@@ -11,9 +11,12 @@ extern int yylineno;
 extern char *yytext;
 extern FILE *yyin;
 char myerror[255];
-void yyerror(const char* fmt, ...);
-void display(struct node *,int);
 void myyyerror();
+extern "C"
+{	
+void yyerror(const char* fmt, ...);
+extern int yylex(void);
+}
 %}
 
 %union {
@@ -26,7 +29,7 @@ void myyyerror();
 //union的默认结构体类型为YYSTYPE，相当于自己把YYSTYPE重新定义为union类型。所以相应的yylval也变为union类型。
 //这个union类型-d选项编译时会放在头文件中
 //  %type 定义非终结符的语义值类型
-%type  <ptr> program ExtDefList Specifier  FunDec  Stmt  CompSt VarList VarDec ParamDec StmList DefList DecList Dec Exp Args
+%type  <ptr> program ExtDefList Specifier FunDec  Stmt  CompSt VarList VarDec ParamDec StmList DefList DecList Dec Exp Args
 
 //% token 定义终结符的语义值类型
 %token <type_int> INT              //指定INT的语义值是type_int，有词法分析得到的数值
@@ -53,11 +56,11 @@ void myyyerror();
 
 %%
 
-program: ExtDefList    { display($1,0);}     /*显示语法树*/
+program: ExtDefList    {/* display($1,0);*/semanticanalysis($1,0);}     /*显示语法树*/
         ;
 ExtDefList: {$$=NULL;}
         | Specifier DecList ENTERS ExtDefList {$$=mknode(EXT_VAR_DEF,$1,$2,$4,NULL,yylineno);}
-        | Specifier DecList  ExtDefList {$$=mknode(EXT_VAR_DEF,$1,$2,$2,NULL,yylineno);}
+        | Specifier DecList  ExtDefList {$$=mknode(EXT_VAR_DEF,$1,$2,$3,NULL,yylineno);}
         | Specifier FunDec CompSt ENTERS ExtDefList{$$=mknode(FUNC_DEF,$1,$2,$3,$5,yylineno);}
         | Specifier FunDec ENTERS ExtDefList{$$=mknode(FUNC_DECLARE,$1,$2,$4,NULL,yylineno);}
         
@@ -100,7 +103,7 @@ StmList: {$$=NULL; }
         | Stmt StmList  {$$=mknode(STM_LIST,$1,$2,NULL,NULL,yylineno);}
         ;
 Stmt:     Exp ENTERS {$$=mknode(EXP_STMT,$1,NULL,NULL,NULL,yylineno);}
-        | CompSt ENTERS {$$=$1;}      //复合语句结点直接最为语句结点，不再生成新的结点
+        | CompSt ENTERS {$$=mknode(COMPT,$1,NULL,NULL,NULL,yylineno);}      //复合语句结点直接最为语句结点，不再生成新的结点
         | RETURN Exp ENTERS {$$=mknode(RETURN,$2,NULL,NULL,NULL,yylineno);}
         | IF LP Exp RP ENTERS CompSt ENTERS %prec LOWER_THEN_ELSE   {$$=mknode(IF_THEN,$3,$6,NULL,NULL,yylineno);}
         | IF LP Exp RP ENTERS CompSt ENTERS ELSE ENTERS CompSt ENTERS   {$$=mknode(IF_THEN_ELSE,$3,$6,$10,NULL,yylineno);}

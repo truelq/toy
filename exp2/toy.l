@@ -16,6 +16,11 @@ typedef union {
 	struct node *ptr;
 } YYLVAL;
 #define YYSTYPE yylval
+extern "C"
+{	
+	int yywrap(void);
+	int yylex(void);
+}
 //flex为bison提供行号信息
 %}
 %option yylineno 
