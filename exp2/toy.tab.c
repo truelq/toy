@@ -1737,31 +1737,31 @@ yyreduce:
 
   case 35:
 #line 107 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(RETURN,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);}
+    {(yyval.ptr)=mknode(RETURN_,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);}
 #line 1742 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
 #line 108 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(IF_THEN,(yyvsp[-4].ptr),(yyvsp[-1].ptr),NULL,NULL,yylineno);}
+    {(yyval.ptr)=mknode(IF_THEN_,(yyvsp[-4].ptr),(yyvsp[-1].ptr),NULL,NULL,yylineno);}
 #line 1748 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
 #line 109 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(IF_THEN_ELSE,(yyvsp[-8].ptr),(yyvsp[-5].ptr),(yyvsp[-1].ptr),NULL,yylineno);}
+    {(yyval.ptr)=mknode(IF_THEN_ELSE_,(yyvsp[-8].ptr),(yyvsp[-5].ptr),(yyvsp[-1].ptr),NULL,yylineno);}
 #line 1754 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
 #line 110 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(WHILE,(yyvsp[-4].ptr),(yyvsp[-1].ptr),NULL,NULL,yylineno);}
+    {(yyval.ptr)=mknode(WHILE_,(yyvsp[-4].ptr),(yyvsp[-1].ptr),NULL,NULL,yylineno);}
 #line 1760 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
 #line 112 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(RETURN,(yyvsp[-2].ptr),NULL,NULL,NULL,yylineno);}
+    {(yyval.ptr)=mknode(RETURN_,(yyvsp[-2].ptr),NULL,NULL,NULL,yylineno);}
 #line 1766 "toy.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1773,103 +1773,103 @@ yyreduce:
 
   case 41:
 #line 114 "toy.y" /* yacc.c:1646  */
-    {sprintf(myerror," WHILE wrong");(yyval.ptr)=mknode(WHILE,(yyvsp[-6].ptr),(yyvsp[-2].ptr),NULL,NULL,yylineno);}
+    {sprintf(myerror," WHILE wrong");(yyval.ptr)=mknode(WHILE_,(yyvsp[-6].ptr),(yyvsp[-2].ptr),NULL,NULL,yylineno);}
 #line 1778 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
 #line 116 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(ASSIGNOP,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"ASSIGNOP");}
+    {(yyval.ptr)=mknode(ASSIGNOP_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"ASSIGNOP");}
 #line 1784 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
 #line 117 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(PLUSASS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUSASS");}
+    {(yyval.ptr)=mknode(PLUSASS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUSASS");}
 #line 1790 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
 #line 118 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(MINUSASS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUSASS");}
+    {(yyval.ptr)=mknode(MINUSASS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUSASS");}
 #line 1796 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
 #line 119 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(STARASS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"STARASS");}
+    {(yyval.ptr)=mknode(STARASS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"STARASS");}
 #line 1802 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
 #line 120 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(DIVASS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"DIVASS");}
+    {(yyval.ptr)=mknode(DIVASS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"DIVASS");}
 #line 1808 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
 #line 122 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(UPLUSPLUS,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UPLUSPLUS");}
+    {(yyval.ptr)=mknode(UPLUSPLUS_,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UPLUSPLUS");}
 #line 1814 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
 #line 123 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(UMINUSMINUS,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UMINUSMINUS");}
+    {(yyval.ptr)=mknode(UMINUSMINUS_,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UMINUSMINUS");}
 #line 1820 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
 #line 124 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(PLUSPLUS,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUSPLUS");}
+    {(yyval.ptr)=mknode(PLUSPLUS_,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUSPLUS");}
 #line 1826 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
 #line 125 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(MINUSMINUS,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUSMINUS");}
+    {(yyval.ptr)=mknode(MINUSMINUS_,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUSMINUS");}
 #line 1832 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
 #line 128 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(AND,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"AND");}
+    {(yyval.ptr)=mknode(AND_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"AND");}
 #line 1838 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
 #line 129 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(OR,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"OR");}
+    {(yyval.ptr)=mknode(OR_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"OR");}
 #line 1844 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
 #line 130 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(RELOP,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[-1].type_id));}
+    {(yyval.ptr)=mknode(RELOP_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[-1].type_id));}
 #line 1850 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
 #line 131 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(PLUS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUS");}
+    {(yyval.ptr)=mknode(PLUS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUS");}
 #line 1856 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
 #line 132 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(MINUS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUS");}
+    {(yyval.ptr)=mknode(MINUS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUS");}
 #line 1862 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
 #line 133 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(STAR,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"STAR");}
+    {(yyval.ptr)=mknode(STAR_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"STAR");}
 #line 1868 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
 #line 134 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(DIV,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"DIV");}
+    {(yyval.ptr)=mknode(DIV_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"DIV");}
 #line 1874 "toy.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1881,13 +1881,13 @@ yyreduce:
 
   case 59:
 #line 136 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(UMINUS,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UMINUS");}
+    {(yyval.ptr)=mknode(UMINUS_,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"UMINUS");}
 #line 1886 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
 #line 137 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(NOT,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"NOT");}
+    {(yyval.ptr)=mknode(NOT_,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"NOT");}
 #line 1892 "toy.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1899,25 +1899,25 @@ yyreduce:
 
   case 62:
 #line 139 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(ID,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));}
+    {(yyval.ptr)=mknode(ID_,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));}
 #line 1904 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
 #line 140 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(INT,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_int=(yyvsp[0].type_int);(yyval.ptr)->type=INT;}
+    {(yyval.ptr)=mknode(INT_,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_int=(yyvsp[0].type_int);(yyval.ptr)->type=INT;}
 #line 1910 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
 #line 141 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(FLOAT,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_float=(yyvsp[0].type_float);(yyval.ptr)->type=FLOAT;}
+    {(yyval.ptr)=mknode(FLOAT_,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_float=(yyvsp[0].type_float);(yyval.ptr)->type=FLOAT;}
 #line 1916 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
 #line 142 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(CHAR,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_char=(yyvsp[0].type_char);(yyval.ptr)->type=CHAR;}
+    {(yyval.ptr)=mknode(CHAR_,NULL,NULL,NULL,NULL,yylineno);(yyval.ptr)->type_char=(yyvsp[0].type_char);(yyval.ptr)->type=CHAR;}
 #line 1922 "toy.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1935,13 +1935,13 @@ yyreduce:
 
   case 68:
 #line 146 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(ARGS,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);}
+    {(yyval.ptr)=mknode(ARGS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);}
 #line 1940 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
 #line 147 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(ARGS,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);}
+    {(yyval.ptr)=mknode(ARGS_,(yyvsp[0].ptr),NULL,NULL,NULL,yylineno);}
 #line 1946 "toy.tab.c" /* yacc.c:1646  */
     break;
 

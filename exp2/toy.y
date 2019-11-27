@@ -104,47 +104,47 @@ StmList: {$$=NULL; }
         ;
 Stmt:     Exp ENTERS {$$=mknode(EXP_STMT,$1,NULL,NULL,NULL,yylineno);}
         | CompSt ENTERS {$$=mknode(COMPT,$1,NULL,NULL,NULL,yylineno);}      //复合语句结点直接最为语句结点，不再生成新的结点
-        | RETURN Exp ENTERS {$$=mknode(RETURN,$2,NULL,NULL,NULL,yylineno);}
-        | IF LP Exp RP ENTERS CompSt ENTERS %prec LOWER_THEN_ELSE   {$$=mknode(IF_THEN,$3,$6,NULL,NULL,yylineno);}
-        | IF LP Exp RP ENTERS CompSt ENTERS ELSE ENTERS CompSt ENTERS   {$$=mknode(IF_THEN_ELSE,$3,$6,$10,NULL,yylineno);}
-        | WHILE LP Exp RP ENTERS CompSt ENTERS {$$=mknode(WHILE,$3,$6,NULL,NULL,yylineno);}
+        | RETURN Exp ENTERS {$$=mknode(RETURN_,$2,NULL,NULL,NULL,yylineno);}
+        | IF LP Exp RP ENTERS CompSt ENTERS %prec LOWER_THEN_ELSE   {$$=mknode(IF_THEN_,$3,$6,NULL,NULL,yylineno);}
+        | IF LP Exp RP ENTERS CompSt ENTERS ELSE ENTERS CompSt ENTERS   {$$=mknode(IF_THEN_ELSE_,$3,$6,$10,NULL,yylineno);}
+        | WHILE LP Exp RP ENTERS CompSt ENTERS {$$=mknode(WHILE_,$3,$6,NULL,NULL,yylineno);}
 
-        | RETURN Exp error ENTERS {$$=mknode(RETURN,$2,NULL,NULL,NULL,yylineno);}
+        | RETURN Exp error ENTERS {$$=mknode(RETURN_,$2,NULL,NULL,NULL,yylineno);}
         | IF LP Exp error RC ENTERS %prec LOWER_THEN_ELSE   {sprintf(myerror," IF wrong");myyyerror();$$=NULL;}
-        | WHILE LP Exp error RP ENTERS CompSt error ENTERS {sprintf(myerror," WHILE wrong");$$=mknode(WHILE,$3,$7,NULL,NULL,yylineno);}
+        | WHILE LP Exp error RP ENTERS CompSt error ENTERS {sprintf(myerror," WHILE wrong");$$=mknode(WHILE_,$3,$7,NULL,NULL,yylineno);}
         ;
-Exp:      Exp ASSIGNOP Exp {$$=mknode(ASSIGNOP,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"ASSIGNOP");}//$$结点type_id空置未用，正好存放运算符
-        | Exp PLUSASS Exp   {$$=mknode(PLUSASS,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"PLUSASS");}//复合赋值运算
-        | Exp MINUSASS Exp   {$$=mknode(MINUSASS,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"MINUSASS");}
-        | Exp STARASS Exp   {$$=mknode(STARASS,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"STARASS");}
-        | Exp DIVASS Exp   {$$=mknode(DIVASS,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"DIVASS");}
+Exp:      Exp ASSIGNOP Exp {$$=mknode(ASSIGNOP_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"ASSIGNOP");}//$$结点type_id空置未用，正好存放运算符
+        | Exp PLUSASS Exp   {$$=mknode(PLUSASS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"PLUSASS");}//复合赋值运算
+        | Exp MINUSASS Exp   {$$=mknode(MINUSASS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"MINUSASS");}
+        | Exp STARASS Exp   {$$=mknode(STARASS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"STARASS");}
+        | Exp DIVASS Exp   {$$=mknode(DIVASS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"DIVASS");}
 
-        | PLUSPLUS Exp %prec UPLUSPLUS   {$$=mknode(UPLUSPLUS,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UPLUSPLUS");}//这里利用BISON %prec表示和UMINUS同优先级
-        | MINUSMINUS Exp %prec UMINUSMINUS   {$$=mknode(UMINUSMINUS,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UMINUSMINUS");}//这里利用BISON %prec表示和UMINUS同优先级
-        | Exp PLUSPLUS   {$$=mknode(PLUSPLUS,$1,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"PLUSPLUS");}//这里利用BISON %prec表示和UMINUS同优先级
-        | Exp MINUSMINUS  {$$=mknode(MINUSMINUS,$1,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"MINUSMINUS");}//这里利用BISON %prec表示和UMINUS同优先级
+        | PLUSPLUS Exp %prec UPLUSPLUS   {$$=mknode(UPLUSPLUS_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UPLUSPLUS");}//这里利用BISON %prec表示和UMINUS同优先级
+        | MINUSMINUS Exp %prec UMINUSMINUS   {$$=mknode(UMINUSMINUS_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UMINUSMINUS");}//这里利用BISON %prec表示和UMINUS同优先级
+        | Exp PLUSPLUS   {$$=mknode(PLUSPLUS_,$1,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"PLUSPLUS");}//这里利用BISON %prec表示和UMINUS同优先级
+        | Exp MINUSMINUS  {$$=mknode(MINUSMINUS_,$1,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"MINUSMINUS");}//这里利用BISON %prec表示和UMINUS同优先级
 
 
-        | Exp AND Exp   {$$=mknode(AND,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"AND");}
-        | Exp OR Exp    {$$=mknode(OR,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"OR");}
-        | Exp RELOP Exp {$$=mknode(RELOP,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,$2);}  //词法分析关系运算符号自身值保存在$2中
-        | Exp PLUS Exp  {$$=mknode(PLUS,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"PLUS");}
-        | Exp MINUS Exp {$$=mknode(MINUS,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"MINUS");}
-        | Exp STAR Exp  {$$=mknode(STAR,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"STAR");}
-        | Exp DIV Exp   {$$=mknode(DIV,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"DIV");}
+        | Exp AND Exp   {$$=mknode(AND_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"AND");}
+        | Exp OR Exp    {$$=mknode(OR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"OR");}
+        | Exp RELOP Exp {$$=mknode(RELOP_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,$2);}  //词法分析关系运算符号自身值保存在$2中
+        | Exp PLUS Exp  {$$=mknode(PLUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"PLUS");}
+        | Exp MINUS Exp {$$=mknode(MINUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"MINUS");}
+        | Exp STAR Exp  {$$=mknode(STAR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"STAR");}
+        | Exp DIV Exp   {$$=mknode(DIV_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"DIV");}
         | LP Exp RP     {$$=$2;}
-        | MINUS Exp %prec UMINUS   {$$=mknode(UMINUS,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UMINUS");}//这里利用BISON %prec表示和UMINUS同优先级 相当于虚拟出一个运算符
-        | NOT Exp       {$$=mknode(NOT,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"NOT");}
+        | MINUS Exp %prec UMINUS   {$$=mknode(UMINUS_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UMINUS");}//这里利用BISON %prec表示和UMINUS同优先级 相当于虚拟出一个运算符
+        | NOT Exp       {$$=mknode(NOT_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"NOT");}
         | ID LP Args RP {$$=mknode(FUNC_CALL,$3,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);}
-        | ID            {$$=mknode(ID,NULL,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);}
-        | INT           {$$=mknode(INT,NULL,NULL,NULL,NULL,yylineno);$$->type_int=$1;$$->type=INT;}
-        | FLOAT         {$$=mknode(FLOAT,NULL,NULL,NULL,NULL,yylineno);$$->type_float=$1;$$->type=FLOAT;}
-        | CHAR          {$$=mknode(CHAR,NULL,NULL,NULL,NULL,yylineno);$$->type_char=$1;$$->type=CHAR;}
+        | ID            {$$=mknode(ID_,NULL,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);}
+        | INT           {$$=mknode(INT_,NULL,NULL,NULL,NULL,yylineno);$$->type_int=$1;$$->type=INT;}
+        | FLOAT         {$$=mknode(FLOAT_,NULL,NULL,NULL,NULL,yylineno);$$->type_float=$1;$$->type=FLOAT;}
+        | CHAR          {$$=mknode(CHAR_,NULL,NULL,NULL,NULL,yylineno);$$->type_char=$1;$$->type=CHAR;}
         | error    {sprintf(myerror," error in Exp");$$=NULL;myyyerror();}
         ;
 Args:   {$$=NULL;}
-        | Exp COMMA Args {$$=mknode(ARGS,$1,$3,NULL,NULL,yylineno);}
-        | Exp {$$=mknode(ARGS,$1,NULL,NULL,NULL,yylineno);}
+        | Exp COMMA Args {$$=mknode(ARGS_,$1,$3,NULL,NULL,yylineno);}
+        | Exp {$$=mknode(ARGS_,$1,NULL,NULL,NULL,yylineno);}
         ;
 ENTERS:   ENTER {}
         | ENTER ENTERS {}

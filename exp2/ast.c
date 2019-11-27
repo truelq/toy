@@ -66,19 +66,19 @@ void display(struct node *T,int indent)  {//对抽象语法树的先根遍历
 	case STM_LIST:      display(T->ptr[0],indent);      //显示第一条语句
                         display(T->ptr[1],indent);        //显示剩下语句
                         break;
-	case WHILE:         printf("%*c循环语句：\n",indent,' ');
+	case WHILE_:         printf("%*c循环语句：\n",indent,' ');
                         printf("%*c循环条件：\n",indent+3,' ');
                         display(T->ptr[0],indent+6);      //显示循环条件
                         printf("%*c循环体：\n",indent+3,' ');
                         display(T->ptr[1],indent+6);      //显示循环体
                         break;
-	case IF_THEN:       printf("%*c条件语句(IF_THEN)：\n",indent,' ');
+	case IF_THEN_:       printf("%*c条件语句(IF_THEN)：\n",indent,' ');
                         printf("%*c条件：\n",indent+3,' ');
                         display(T->ptr[0],indent+6);      //显示条件
                         printf("%*cIF子句：\n",indent+3,' ');
                         display(T->ptr[1],indent+6);      //显示if子句
                         break;
-	case IF_THEN_ELSE:  printf("%*c条件语句(IF_THEN_ELSE)：\n",indent,' ');
+	case IF_THEN_ELSE_:  printf("%*c条件语句(IF_THEN_ELSE)：\n",indent,' ');
                         printf("%*c条件：\n",indent+3,' ');
                         display(T->ptr[0],indent+6);      //显示条件
                         printf("%*cIF子句：\n",indent+3,' ');
@@ -94,9 +94,9 @@ void display(struct node *T,int indent)  {//对抽象语法树的先根遍历
     case DEC_LIST:      printf("%*cVAR_NAME：\n",indent,' ');
                         T0=T;
                         while (T0) {
-                            if (T0->ptr[0]->kind==ID)
+                            if (T0->ptr[0]->kind==ID_)
                                 printf("%*c %s\n",indent+3,' ',T0->ptr[0]->type_id);
-                            else if (T0->ptr[0]->kind==ASSIGNOP)
+                            else if (T0->ptr[0]->kind==ASSIGNOP_)
                                 {
                                 printf("%*c %s ASSIGNOP\n ",indent+3,' ',T0->ptr[0]->ptr[0]->type_id);
 							//显示初始化表达式
@@ -106,45 +106,45 @@ void display(struct node *T,int indent)  {//对抽象语法树的先根遍历
                             }
                         
                         break;
-	case ID:	        printf("%*cID： %s\n",indent,' ',T->type_id);
+	case ID_:	        printf("%*cID： %s\n",indent,' ',T->type_id);
                         break;
-	case INT:	        printf("%*cINT：%d\n",indent,' ',T->type_int);
+	case INT_:	        printf("%*cINT：%d\n",indent,' ',T->type_int);
                         break;
-	case FLOAT:	        printf("%*cFLAOT：%f\n",indent,' ',T->type_float);
+	case FLOAT_:	        printf("%*cFLAOT：%f\n",indent,' ',T->type_float);
                         break;
-  case CHAR:	        printf("%*cCHAR：%c\n",indent,' ',T->type_char);
+  case CHAR_:	        printf("%*cCHAR：%c\n",indent,' ',T->type_char);
                         break;
-	case ASSIGNOP:
-  case PLUSASS:
-  case MINUSASS:
-  case STARASS:
-  case DIVASS:
-	case AND:
-	case OR:
-	case RELOP:
-	case PLUS:
-	case MINUS:
-	case STAR:
-	case DIV:
+	case ASSIGNOP_:
+  case PLUSASS_:
+  case MINUSASS_:
+  case STARASS_:
+  case DIVASS_:
+	case AND_:
+	case OR_:
+	case RELOP_:
+	case PLUS_:
+	case MINUS_:
+	case STAR_:
+	case DIV_:
                     printf("%*c%s\n",indent,' ',T->type_id);
                     display(T->ptr[0],indent+3);
                     display(T->ptr[1],indent+3);
                     break;
   
-  case UPLUSPLUS:
-  case UMINUSMINUS:
+  case UPLUSPLUS_:
+  case UMINUSMINUS_:
   //暂且将左结合有结合放在一起
-  case PLUSPLUS:
-  case MINUSMINUS:
-	case NOT:
-	case UMINUS:    printf("%*c%s\n",indent,' ',T->type_id);
+  case PLUSPLUS_:
+  case MINUSMINUS_:
+	case NOT_:
+	case UMINUS_:    printf("%*c%s\n",indent,' ',T->type_id);
                     display(T->ptr[0],indent+3);
                     break;
   case FUNC_CALL: printf("%*c函数调用：\n",indent,' ');
                     printf("%*c函数名：%s\n",indent+3,' ',T->type_id);
                     display(T->ptr[0],indent+3);
                     break;
-	case ARGS:      i=1;
+	case ARGS_:      i=1;
                     while (T) {  //ARGS表示实际参数表达式序列结点，其第一棵子树为其一个实际参数表达式，第二棵子树为剩下的。
                         struct node *T0=T->ptr[0];
                         printf("%*c第%d个实际参数表达式：\n",indent,' ',i++);

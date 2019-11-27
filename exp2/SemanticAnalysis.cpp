@@ -10,6 +10,7 @@ int id;
 //一系列的全局变量表示当前位置
 //可以添加一个计算表达式最大类型的函数
 void displaytable(){
+    printf("1\n");
     for(int i=0;i<semantictable.size();++i){
         printf("%s ",semantictable[i].type_id);
         printf("%d ",semantictable[i].id);
@@ -20,12 +21,14 @@ void displaytable(){
     cout<<endl;
 }
 int calculate(struct node *T);
-int unique_check(node &T);
+int unique_check(node &T){
+    return 1;
+}
 int declare_check(node &T);
 int type_check(node &T);//形参和实参
 int break_check(node &T);
 void semanticanalysis(struct node *T,int level){
-    
+    int temp;
     struct node* t=NULL;
     if(T){
         //printf("1%d",T->kind);
@@ -42,7 +45,7 @@ void semanticanalysis(struct node *T,int level){
             case DEC_LIST:
                 t=T;
                 while (t) {//先不处理表达式
-                    if (t->ptr[0]->kind==ID){
+                    if (t->ptr[0]->kind==ID_){
                         strcpy(little.type_id,t->ptr[0]->type_id);
                         little.level=level;
                         little.offset=offset;
@@ -52,7 +55,7 @@ void semanticanalysis(struct node *T,int level){
                             semantictable.push_back(little);
                         }
                     }
-                    else if (t->ptr[0]->kind==ASSIGNOP)
+                    else if (t->ptr[0]->kind==ASSIGNOP_)
                     {
                         //计算表达式的类型,进行语义判断
                         //先掠过
@@ -120,9 +123,15 @@ void semanticanalysis(struct node *T,int level){
                     semantictable.push_back(little);
                 }
                 break;
+            case VAR_DEF:
+                little.level=level;
+                semanticanalysis(T->ptr[0],level);//去设置变量类型
+                semanticanalysis(T->ptr[1],level);//去设置变量id
+                semanticanalysis(T->ptr[2],level);//继续遍历其他
+                break;
             case COMP_STM:
                 //这里是一个代码块的开始,应当设置偏移量为0
-                int temp=offset;//只是为了保存临时变量
+                temp=offset;//只是为了保存临时变量
                 offset=0;
                 semanticanalysis(T->ptr[0],level);
                 semanticanalysis(T->ptr[1],level);
@@ -130,12 +139,7 @@ void semanticanalysis(struct node *T,int level){
                 printf("wait....\n");
                 displaytable();
                 break;
-            case VAR_DEF:
-                little.level=level;
-                semanticanalysis(T->ptr[0],level);//去设置变量类型
-                semanticanalysis(T->ptr[1],level);//去设置变量id
-                semanticanalysis(T->ptr[2],level);//继续遍历其他
-                break;
+            
             case STM_LIST:
                 //这一层主要表示可以为空,迭代
                 semanticanalysis(T->ptr[0],level);
@@ -147,72 +151,60 @@ void semanticanalysis(struct node *T,int level){
             case COMPT:
                 semanticanalysis(T->ptr[0],level+1);//结构体套结构体
                 break;
-            case RETURN:
+            case RETURN_:
                 semanticanalysis(T->ptr[0],level);
                 semanticanalysis(T->ptr[1],level);
                 break;
-            case IF_THEN:
+            case IF_THEN_:
                 semanticanalysis(T->ptr[0],level);
                 semanticanalysis(T->ptr[1],level+1);
                 break;
-            case IF_THEN_ELSE:
+            case IF_THEN_ELSE_:
                 semanticanalysis(T->ptr[0],level);
                 semanticanalysis(T->ptr[1],level+1);
                 semanticanalysis(T->ptr[2],level+1);
                 break;
-            case WHILE:
+            case WHILE_:
                 semanticanalysis(T->ptr[0],level);
                 semanticanalysis(T->ptr[1],level+1);
                 break;
             
-	        case ASSIGNOP:
-            case PLUSASS:
-            case MINUSASS:
-            case STARASS:
-            case DIVASS:
-	        case AND:
-	        case OR:
-	        case RELOP:
-	        case PLUS:
-	        case MINUS:
-	        case STAR:
-	        case DIV:
-                    printf("%*c%s\n",indent,' ',T->type_id);
-                    display(T->ptr[0],indent+3);
-                    display(T->ptr[1],indent+3);
+	        case ASSIGNOP_:
+            case PLUSASS_:
+            case MINUSASS_:
+            case STARASS_:
+            case DIVASS_:
+	        case AND_:
+	        case OR_:
+	        case RELOP_:
+	        case PLUS_:
+	        case MINUS_:
+	        case STAR_:
+	        case DIV_:
+
                     break;
   
-            case UPLUSPLUS:
-            case UMINUSMINUS:
+            case UPLUSPLUS_:
+            case UMINUSMINUS_:
             //暂且将左结合有结合放在一起
-            case PLUSPLUS:
-            case MINUSMINUS:
-	        case NOT:
-	        case UMINUS:    printf("%*c%s\n",indent,' ',T->type_id);
-                    display(T->ptr[0],indent+3);
+            case PLUSPLUS_:
+            case MINUSMINUS_:
+	        case NOT_:
+	        case UMINUS_:    
                     break;
-            case FUNC_CALL: printf("%*c函数调用：\n",indent,' ');
-                    printf("%*c函数名：%s\n",indent+3,' ',T->type_id);
-                    display(T->ptr[0],indent+3);
+            case FUNC_CALL: 
                     break;
             
-                        case ID:	printf("%*cID： %s\n",indent,' ',T->type_id);
+            case ID_:	
                         break;
-	        case INT:	        printf("%*cINT：%d\n",indent,' ',T->type_int);
+	        case INT_:	        
                         break;
-	        case FLOAT:	        printf("%*cFLAOT：%f\n",indent,' ',T->type_float);
+	        case FLOAT_:	        
                         break;
-            case CHAR:	        printf("%*cCHAR：%c\n",indent,' ',T->type_char);
+            case CHAR_:	        
                         break;
-	        case ARGS:      i=1;
-                    while (T) {  //ARGS表示实际参数表达式序列结点，其第一棵子树为其一个实际参数表达式，第二棵子树为剩下的。
-                        struct node *T0=T->ptr[0];
-                        printf("%*c第%d个实际参数表达式：\n",indent,' ',i++);
-                        display(T0,indent+3);
-                        T=T->ptr[1];
-                        }
-                    printf("\n");
-                    break;
+	        case ARGS_:     
+
             case JLT:
             case JLE:
             case JGT:
