@@ -1,13 +1,17 @@
-int _a,b,c
-float m,n
-int ee=a+b+c
-int c
-int test(int a,int a)
+int _a,b
 int fibo(int a){
-	int a
-	int c
+	int c=b
+    c=c
 	if(a==1||a==2)
 	{
+		e=e
+		{
+			int e
+			b=e
+		}
+		{
+			e=e
+		}
 		return 1
 	}
 	return fibo(a-1)+fibo(a-2)

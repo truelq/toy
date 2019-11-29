@@ -1,10 +1,7 @@
-int _a,b,c
+int a,b,c
 float m,n
 int ee=a+b+c
-int c
-int test(int a,int a)
 int fibo(int a){
-	int a
 	int c
 	if(a==1||a==2)
 	{
@@ -20,12 +17,13 @@ int main(){
 	{
 		n=fibo(i)
 		write(n)
+        while(i<=m)
+        {
+            break
+            break
+        }
 		break
 	}
-	m=m+n*i+i
-	i+=1
-	++i
-	m=2.333
-	d='c'
+    break
 	return 1
 }
