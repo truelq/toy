@@ -37,7 +37,7 @@ int unique_check(node &T){
             else return 1;
             continue;
         }
-        if(!strcmp(semantictable[i].type_id,little.type_id)&&){
+        if(!strcmp(semantictable[i].type_id,little.type_id)){
             //检测函数
 
             //检测变量,静态变量不需要考虑,level=0表示参数,
