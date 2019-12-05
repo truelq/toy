@@ -1,4 +1,4 @@
-toy: toy.l toy.y ast.c SemanticAnalysis.cpp
+toy: toy.l toy.y ast.c SemanticAnalysis.cpp CodeGenerate.cpp
 	bison -d toy.y
 	flex toy.l
-	g++ -o $@ SemanticAnalysis.cpp lex.yy.c toy.tab.h toy.tab.c def.h ast.c  -lfl -lstdc++
+	g++ -o $@ def.h  SemanticAnalysis.cpp CodeGenerate.cpp lex.yy.c toy.tab.h toy.tab.c ast.c  -lfl -lstdc++

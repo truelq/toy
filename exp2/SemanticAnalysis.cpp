@@ -104,7 +104,7 @@ int declare_check(node &T){
 int type_check(node *T){
     if(T==NULL)
         return 0;
-    if(T->type==ID_){
+    if(T->kind==ID_){
         struct node tempp=little;
         strcpy(tempp.type_id,T->type_id);
         return declare_check(little);
@@ -168,6 +168,7 @@ int args_check(node *T){
             if(semantictable[i].type!=type_check(T->ptr[0])){
                 printf("%d\n",semantictable[i].type);
                 printf("Error: type conflict at Line:%d\n",T->pos);
+                printf("%d %d\n",semantictable[i].type,type_check(T->ptr[0]));
             }
             T=T->ptr[1];
         }else{

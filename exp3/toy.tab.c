@@ -1538,7 +1538,7 @@ yyreduce:
     {
         case 2:
 #line 59 "toy.y" /* yacc.c:1646  */
-    { display((yyvsp[0].ptr),0);semanticanalysis((yyvsp[0].ptr),0);}
+    { display((yyvsp[0].ptr),0);semanticanalysis((yyvsp[0].ptr),0);semanticanalysis1((yyvsp[0].ptr),0);}
 #line 1543 "toy.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1898,13 +1898,13 @@ yyreduce:
 
   case 62:
 #line 139 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(FUNC_CALL,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[-3].type_id));}
+    {(yyval.ptr)=mknode(FUNC_CALL,(yyvsp[-1].ptr),NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[-3].type_id));(yyval.ptr)->type=FUNC_CALL;}
 #line 1903 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
 #line 140 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(ID_,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));}
+    {(yyval.ptr)=mknode(ID_,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));(yyval.ptr)->type=ID_;}
 #line 1909 "toy.tab.c" /* yacc.c:1646  */
     break;
 

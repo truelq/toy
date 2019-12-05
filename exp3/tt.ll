@@ -8,6 +8,7 @@ target triple = "x86_64-pc-linux-gnu"
 @c = common global i32 0, align 4
 @m = common global float 0.000000e+00, align 4
 @n = common global float 0.000000e+00, align 4
+@d = common global i8 0, align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define i32 @fibo(i32) #0 {
@@ -25,7 +26,7 @@ define i32 @fibo(i32) #0 {
 
 ; <label>:9:                                      ; preds = %6, %1
   store i32 1, i32* %2, align 4
-  br label %18
+  br label %aaaa
 
 ; <label>:10:                                     ; preds = %6
   %11 = load i32, i32* %3, align 4
@@ -36,11 +37,11 @@ define i32 @fibo(i32) #0 {
   %16 = call i32 @fibo(i32 %15)
   %17 = add nsw i32 %13, %16
   store i32 %17, i32* %2, align 4
-  br label %18
+  br label %aaaa
 
-; <label>:18:                                     ; preds = %10, %9
-  %19 = load i32, i32* %2, align 4
-  ret i32 %19
+aaaa:                                     ; preds = %10, %9
+  %cccc = load i32, i32* %2, align 4
+  ret i32 %cccc
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
@@ -49,26 +50,29 @@ define i32 @main() #0 {
   %2 = alloca i32, align 4
   %3 = alloca i32, align 4
   %4 = alloca i32, align 4
+  %5 = alloca i32, align 4
   store i32 0, i32* %1, align 4
   store i32 1, i32* %4, align 4
-  br label %5
+  br label %6
 
-; <label>:5:                                      ; preds = %9, %0
-  %6 = load i32, i32* %4, align 4
-  %7 = load i32, i32* %2, align 4
-  %8 = icmp sle i32 %6, %7
-  br i1 %8, label %9, label %14
+; <label>:6:                                      ; preds = %10, %0
+  %7 = load i32, i32* %4, align 4
+  %8 = load i32, i32* %2, align 4
+  %9 = icmp sle i32 %7, %8
+  br i1 %9, label %10, label %16
 
-; <label>:9:                                      ; preds = %5
-  %10 = load i32, i32* %4, align 4
-  %11 = call i32 @fibo(i32 %10)
-  store i32 %11, i32* %3, align 4
+; <label>:10:                                     ; preds = %6
+  %11 = load i32, i32* %3, align 4
+  store i32 %11, i32* %5, align 4
   %12 = load i32, i32* %4, align 4
-  %13 = add nsw i32 %12, 1
-  store i32 %13, i32* %4, align 4
-  br label %5
+  %13 = call i32 @fibo(i32 %12)
+  store i32 %13, i32* %3, align 4
+  %14 = load i32, i32* %4, align 4
+  %15 = add nsw i32 %14, 1
+  store i32 %15, i32* %4, align 4
+  br label %6
 
-; <label>:14:                                     ; preds = %5
+; <label>:16:                                     ; preds = %6
   ret i32 1
 }
 

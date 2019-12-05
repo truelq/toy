@@ -136,8 +136,8 @@ Exp:      Exp ASSIGNOP Exp {$$=mknode(ASSIGNOP_,$1,$3,NULL,NULL,yylineno);strcpy
         | LP Exp RP     {$$=$2;}
         | MINUS Exp %prec UMINUS   {$$=mknode(UMINUS_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UMINUS");}//这里利用BISON %prec表示和UMINUS同优先级 相当于虚拟出一个运算符
         | NOT Exp       {$$=mknode(NOT_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"NOT");}
-        | ID LP Args RP {$$=mknode(FUNC_CALL,$3,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);}
-        | ID            {$$=mknode(ID_,NULL,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);}
+        | ID LP Args RP {$$=mknode(FUNC_CALL,$3,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);$$->type=FUNC_CALL;}
+        | ID            {$$=mknode(ID_,NULL,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);$$->type=ID_;}
         | INT           {$$=mknode(INT_,NULL,NULL,NULL,NULL,yylineno);$$->type_int=$1;$$->type=INT_;}
         | FLOAT         {$$=mknode(FLOAT_,NULL,NULL,NULL,NULL,yylineno);$$->type_float=$1;$$->type=FLOAT_;}
         | CHAR          {$$=mknode(CHAR_,NULL,NULL,NULL,NULL,yylineno);$$->type_char=$1;$$->type=CHAR_;}

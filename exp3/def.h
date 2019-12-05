@@ -27,3 +27,10 @@ struct node {
 struct node *mknode(int kind,struct node *first,struct node *second, struct node *third,struct node *fourth,int pos );
 void display(struct node *T,int indent);
 void semanticanalysis(struct node *T,int level);
+void semanticanalysis1(struct node *T,int level);
+int args_check(node *T);
+int break_check(node &T);
+int type_check(node *T);
+int declare_check(node &T);
+int unique_check(node &T);
+void displaytable();
