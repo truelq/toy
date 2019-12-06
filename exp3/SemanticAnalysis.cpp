@@ -57,8 +57,8 @@ int declare_check(node &T){
     //在其可见作用域查找
     int openc=0;
     int close=0;
-    int temp_level=little.level;
-    int temp_father=little.level_father;
+    int temp_level=T.level;
+    int temp_father=T.level_father;
     for(int i=semantictable.size()-1;i>=0;--i){
         //对于大括号,采取只降不升策略,因为层号变深意味着作用域出问题
         //if(semantictable[i].father==little.father||semantictable[i].father==0)//同是全局变量或同是函数变量且在大括号的可见部分
@@ -72,10 +72,10 @@ int declare_check(node &T){
                 continue;
             }
             if(!close){
-                if(!strcmp(little.type_id,semantictable[i].type_id)&&little.is_func==0){
+                if(!strcmp(T.type_id,semantictable[i].type_id)&&T.is_func==0){
                     return semantictable[i].type;
                 }
-                if(!strcmp(little.type_id,semantictable[i].type_id)&&little.father==semantictable[i].father&&little.is_func==0){
+                if(!strcmp(T.type_id,semantictable[i].type_id)&&T.father==semantictable[i].father&&T.is_func==0){
                     return semantictable[i].type;
                 }
             }
@@ -95,7 +95,7 @@ int declare_check(node &T){
             */
         }
         if(semantictable[i].is_func){
-            if(!strcmp(little.type_id,semantictable[i].type_id))
+            if(!strcmp(T.type_id,semantictable[i].type_id))
                     return semantictable[i].type;
         }
     }
@@ -105,9 +105,9 @@ int type_check(node *T){
     if(T==NULL)
         return 0;
     if(T->kind==ID_){
-        struct node tempp=little;
+        struct node tempp=*T;
         strcpy(tempp.type_id,T->type_id);
-        return declare_check(little);
+        return declare_check(tempp);
     }else if(T->type==CHAR_)
         return CHAR_;
     else if(T->type==INT_)

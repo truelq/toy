@@ -1,7 +1,10 @@
 int a,b,c;
 float m,n;
 char d;
-int test(int a);
+int test(int a,int b){
+	int c=a+b;
+	return 0;
+}
 int fibo(int a){
 	if(a==1||a==2) return 1;
 	return fibo(a-1)+fibo(a-2);

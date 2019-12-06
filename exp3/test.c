@@ -1,5 +1,10 @@
 int _a,b,c
 char kkk
+float ttt
+int test(int a,int b){
+	int c=a
+	return c
+}
 int fibo(int a){
 	int c
 	if(a==1||a==2)

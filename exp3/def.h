@@ -23,6 +23,7 @@ struct node {
     int id;//唯一标识符
     int father;
     int level_father;
+    int tempid;
     };
 struct node *mknode(int kind,struct node *first,struct node *second, struct node *third,struct node *fourth,int pos );
 void display(struct node *T,int indent);

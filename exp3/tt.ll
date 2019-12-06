@@ -11,6 +11,20 @@ target triple = "x86_64-pc-linux-gnu"
 @d = common global i8 0, align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
+define i32 @test(i32, i32) #0 {
+  %3 = alloca i32, align 4
+  %4 = alloca i32, align 4
+  %5 = alloca i32, align 4
+  store i32 %0, i32* %3, align 4
+  store i32 %1, i32* %4, align 4
+  %6 = load i32, i32* %3, align 4
+  %7 = load i32, i32* %4, align 4
+  %8 = add nsw i32 %6, %7
+  store i32 %8, i32* %5, align 4
+  ret i32 0
+}
+
+; Function Attrs: noinline nounwind optnone uwtable
 define i32 @fibo(i32) #0 {
   %2 = alloca i32, align 4
   %3 = alloca i32, align 4
@@ -26,7 +40,7 @@ define i32 @fibo(i32) #0 {
 
 ; <label>:9:                                      ; preds = %6, %1
   store i32 1, i32* %2, align 4
-  br label %aaaa
+  br label %18
 
 ; <label>:10:                                     ; preds = %6
   %11 = load i32, i32* %3, align 4
@@ -37,11 +51,11 @@ define i32 @fibo(i32) #0 {
   %16 = call i32 @fibo(i32 %15)
   %17 = add nsw i32 %13, %16
   store i32 %17, i32* %2, align 4
-  br label %aaaa
+  br label %18
 
-aaaa:                                     ; preds = %10, %9
-  %cccc = load i32, i32* %2, align 4
-  ret i32 %cccc
+; <label>:18:                                     ; preds = %10, %9
+  %19 = load i32, i32* %2, align 4
+  ret i32 %19
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
