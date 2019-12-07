@@ -1838,13 +1838,13 @@ yyreduce:
 
   case 52:
 #line 129 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(AND_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"AND");}
+    {(yyval.ptr)=mknode(AND_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"and");}
 #line 1843 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
 #line 130 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(OR_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"OR");}
+    {(yyval.ptr)=mknode(OR_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"or");}
 #line 1849 "toy.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1856,25 +1856,25 @@ yyreduce:
 
   case 55:
 #line 132 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(PLUS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"PLUS");}
+    {(yyval.ptr)=mknode(PLUS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"add");}
 #line 1861 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
 #line 133 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(MINUS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"MINUS");}
+    {(yyval.ptr)=mknode(MINUS_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"sub");}
 #line 1867 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
 #line 134 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(STAR_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"STAR");}
+    {(yyval.ptr)=mknode(STAR_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"mul");}
 #line 1873 "toy.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
 #line 135 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(DIV_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"DIV");}
+    {(yyval.ptr)=mknode(DIV_,(yyvsp[-2].ptr),(yyvsp[0].ptr),NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,"udiv");}
 #line 1879 "toy.tab.c" /* yacc.c:1646  */
     break;
 

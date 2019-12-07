@@ -3,25 +3,26 @@ source_filename = "tt.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
+@c = common global i32 0, align 4
 @a = common global i32 0, align 4
 @b = common global i32 0, align 4
-@c = common global i32 0, align 4
 @m = common global float 0.000000e+00, align 4
 @n = common global float 0.000000e+00, align 4
 @d = common global i8 0, align 1
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define i32 @test(i32, i32) #0 {
-  %3 = alloca i32, align 4
-  %4 = alloca i32, align 4
-  %5 = alloca i32, align 4
-  store i32 %0, i32* %3, align 4
-  store i32 %1, i32* %4, align 4
-  %6 = load i32, i32* %3, align 4
-  %7 = load i32, i32* %4, align 4
-  %8 = add nsw i32 %6, %7
-  store i32 %8, i32* %5, align 4
-  ret i32 0
+%3 = alloca i32, align 4
+store i32 %0, i32* %3, align 4
+%4 = load i32,i32* %3, align 4
+%5 = alloca i32, align 4
+store i32 %1, i32* %5, align 4
+%6 = load i32,i32* %5, align 4
+%7 = load i32,i32* @c, align 4
+%8 = alloca i32, align 4
+store i32 %7, i32* %8, align 4
+%9 = load i32,i32* @c, align 4
+ret i32 %9
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable

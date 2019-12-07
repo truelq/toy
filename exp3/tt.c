@@ -2,7 +2,7 @@ int a,b,c;
 float m,n;
 char d;
 int test(int a,int b){
-	int c=a+b;
+	int e=a+b+c;
 	return 0;
 }
 int fibo(int a){

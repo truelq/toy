@@ -126,13 +126,13 @@ Exp:      Exp ASSIGNOP Exp {$$=mknode(ASSIGNOP_,$1,$3,NULL,NULL,yylineno);strcpy
         | Exp MINUSMINUS  {$$=mknode(MINUSMINUS_,$1,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"MINUSMINUS");}//这里利用BISON %prec表示和UMINUS同优先级
 
 
-        | Exp AND Exp   {$$=mknode(AND_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"AND");}
-        | Exp OR Exp    {$$=mknode(OR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"OR");}
+        | Exp AND Exp   {$$=mknode(AND_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"and");}
+        | Exp OR Exp    {$$=mknode(OR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"or");}
         | Exp RELOP Exp {$$=mknode(RELOP_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,$2);}  //词法分析关系运算符号自身值保存在$2中
-        | Exp PLUS Exp  {$$=mknode(PLUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"PLUS");}
-        | Exp MINUS Exp {$$=mknode(MINUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"MINUS");}
-        | Exp STAR Exp  {$$=mknode(STAR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"STAR");}
-        | Exp DIV Exp   {$$=mknode(DIV_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"DIV");}
+        | Exp PLUS Exp  {$$=mknode(PLUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"add");}
+        | Exp MINUS Exp {$$=mknode(MINUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"sub");}
+        | Exp STAR Exp  {$$=mknode(STAR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"mul");}
+        | Exp DIV Exp   {$$=mknode(DIV_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"udiv");}
         | LP Exp RP     {$$=$2;}
         | MINUS Exp %prec UMINUS   {$$=mknode(UMINUS_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UMINUS");}//这里利用BISON %prec表示和UMINUS同优先级 相当于虚拟出一个运算符
         | NOT Exp       {$$=mknode(NOT_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"NOT");}
