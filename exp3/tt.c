@@ -20,6 +20,7 @@ int main(){
 		n=fibo(i);
 		//write(n);
 		i=i+1;
+		break;
 	}
 	return 1;
 }

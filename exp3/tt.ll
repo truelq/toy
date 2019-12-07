@@ -12,17 +12,18 @@ target triple = "x86_64-pc-linux-gnu"
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define i32 @test(i32, i32) #0 {
-%3 = alloca i32, align 4
-store i32 %0, i32* %3, align 4
-%4 = load i32,i32* %3, align 4
-%5 = alloca i32, align 4
-store i32 %1, i32* %5, align 4
-%6 = load i32,i32* %5, align 4
-%7 = load i32,i32* @c, align 4
-%8 = alloca i32, align 4
-store i32 %7, i32* %8, align 4
-%9 = load i32,i32* @c, align 4
-ret i32 %9
+  %3 = alloca i32, align 4
+  %4 = alloca i32, align 4
+  %5 = alloca i32, align 4
+  store i32 %0, i32* %3, align 4
+  store i32 %1, i32* %4, align 4
+  %6 = load i32, i32* %3, align 4
+  %7 = load i32, i32* %4, align 4
+  %8 = add nsw i32 %6, %7
+  %9 = load i32, i32* @c, align 4
+  %10 = add nsw i32 %8, %9
+  store i32 %10, i32* %5, align 4
+  ret i32 0
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
@@ -70,7 +71,7 @@ define i32 @main() #0 {
   store i32 1, i32* %4, align 4
   br label %6
 
-; <label>:6:                                      ; preds = %10, %0
+; <label>:6:                                      ; preds = %0
   %7 = load i32, i32* %4, align 4
   %8 = load i32, i32* %2, align 4
   %9 = icmp sle i32 %7, %8
@@ -85,9 +86,9 @@ define i32 @main() #0 {
   %14 = load i32, i32* %4, align 4
   %15 = add nsw i32 %14, 1
   store i32 %15, i32* %4, align 4
-  br label %6
+  br label %16
 
-; <label>:16:                                     ; preds = %6
+; <label>:16:                                     ; preds = %10, %6
   ret i32 1
 }
 
