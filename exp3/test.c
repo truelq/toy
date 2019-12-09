@@ -1,6 +1,4 @@
 int _a,b,c
-char kkk
-float ttt
 int fibo(int a){
 	if(a==1||a==2)
 	{
