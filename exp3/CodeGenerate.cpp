@@ -163,67 +163,7 @@ int type_check1(node *T) {
   int b = type_check1(T->ptr[1]);
   return a > b ? a : b;
 }
-int break_check1(node &T) {
-  int openc = 0;
-  int closec = 0;
-  int flag = 0;
-  vector<int> ttt;
-  int ccc = 0;
-  for (int i = 0; i < semantictable1.size(); ++i) {
-    if (semantictable1[i].type == WHILE_) {
-      flag += 1;
-      ccc += 1;
-    } else if (semantictable1[i].type == OPEN_) {
-      openc += 1;
-      if (ccc) {
-        ccc -= 1;
-        ttt.push_back(openc);
-      }
-    } else if (semantictable1[i].type == CLOSE_) {
-      openc -= 1;
-    } else if (semantictable1[i].type == BREAK_) {
-      if (flag) {
-        if (openc <= closec) {
-          return 0;
-        }
-      } else {
-        return 0;
-      }
-    }
-  }
-  return 0;
-}
-int args_check1(node *T) {
-  int flag = 0;
-  int fa_id = 0;
-  for (int i = 0; i < semantictable1.size(); ++i) {
-    //为了解决递归的问题只要声明了就可以
-    if (!flag && semantictable1[i].is_func &&
-        !strcmp(semantictable1[i].type_id, little1.type_id)) {
-      //printf("%s %d\n", semantictable1[i].type_id, semantictable1[i].id);
-      flag = 1;
-      fa_id = semantictable1[i].id;
-      continue;
-    }
-    if (flag == 1 && semantictable1[i].father == fa_id &&
-        semantictable1[i].id) {
-      //printf("%d\n", semantictable1[i].father);
-      if (T == NULL) {
-        printf("Error: type conflict at Line\n");
-        return 0;
-      }
-      if (semantictable1[i].type != type_check1(T->ptr[0])) {
-        //printf("%d\n", semantictable1[i].type);
-        //printf("Error: type conflict at Line:%d\n", T->pos);
-        //printf("%d %d\n", semantictable1[i].type, type_check1(T->ptr[0]));
-      }
-      T = T->ptr[1];
-    } else {
-      if (flag == 1)
-        return 0;
-    }
-  }
-}
+
 void semanticanalysis1(struct node *T, int level) {
   int temp;
   struct node *t = NULL;
@@ -526,10 +466,10 @@ void semanticanalysis1(struct node *T, int level) {
         littletemplabel.beginlabel=to_string(counter - 1) + "begin";
         littletemplabel.endlabel = to_string(counter - 1) + "end";
         semanticanalysis1(T->ptr[0],level);
-        string base="label "+littletemplabel.beginlabel+" :";
+        string base="label %"+littletemplabel.beginlabel+":";
         cout<<base<<endl;
         semanticanalysis1(T->ptr[1],level+1);
-        base="label "+littletemplabel.endlabel+" :";
+        base="label %"+littletemplabel.endlabel+":";
         cout<<base<<endl;
         littletemplabel=temp;
       }else{
@@ -537,9 +477,9 @@ void semanticanalysis1(struct node *T, int level) {
         string base2=to_string(counter-1)+"end";
         semanticanalysis1(T->ptr[0],level);
         cout<<"br i1 %"+to_string(counter-1)+", label "+base1+", label "+base2<<endl;
-        cout<<"label "+base1<<endl;
+        cout<<"label %"+base1<<endl;
         semanticanalysis1(T->ptr[1],level+1);
-        cout<<"label "+base2<<endl;
+        cout<<"label %"+base2<<endl;
       }
       little1.level = level;
       little1.level_father = level + 1;
@@ -562,11 +502,11 @@ void semanticanalysis1(struct node *T, int level) {
       littletemplabel.beginlabel = to_string(counter - 1) + "before";
       littletemplabel.beginlabel = to_string(counter - 1) + "begin";
       littletemplabel.endlabel = to_string(counter - 1) + "end";
-      cout << "label " << littletemplabel.beginlabel << ":" << endl;
+      cout << "label %" << littletemplabel.beginlabel << ":" << endl;
       semanticanalysis1(T->ptr[0], level);
-      cout << "label " << littletemplabel.beginlabel << ":" << endl;
+      cout << "label %" << littletemplabel.beginlabel << ":" << endl;
       semanticanalysis1(T->ptr[1], level + 1);
-      cout << "label " << littletemplabel.endlabel << ":" << endl;
+      cout << "label %" << littletemplabel.endlabel << ":" << endl;
       little1.level = level;
       little1.level_father = level + 1;
       littletemplabel = temp;
@@ -576,7 +516,7 @@ void semanticanalysis1(struct node *T, int level) {
       // if(!whiles){//在遇到不平均开闭作用域时应遇到while节点
       //    printf("Error: token break wrong at Line:%d\n",T->pos);
       //}
-      cout << "br label " << littletemplabel.endlabel << endl;
+      cout << "br label %" << littletemplabel.endlabel << endl;
       break;
     case ASSIGNOP_: {
       if (T->ptr[0]->kind != ID_) {
@@ -629,14 +569,14 @@ void semanticanalysis1(struct node *T, int level) {
       littletemplabel.beginlabel = to_string(counter - 1) + "beginand";
       littletemplabel.endlabel = to_string(counter - 1) + "endand";
       semanticanalysis1(T->ptr[0], level);
-      string base = "br i1 %" + to_string(counter - 1) + ", label " +
-                    littletemplabel.beginlabel + ", label " +
+      string base = "br i1 %" + to_string(counter - 1) + ", label %" +
+                    littletemplabel.beginlabel + ", label %" +
                     temp.endlabel;
       cout << base << endl;
-      cout << "label " + littletemplabel.beginlabel+" :" << endl;
+      cout << "label %" + littletemplabel.beginlabel+":" << endl;
       semanticanalysis1(T->ptr[1], level);
-      base = "br i1 %" + to_string(counter - 1) + ", label " +
-                    temp.beginlabel + ", label " +
+      base = "br i1 %" + to_string(counter - 1) + ", label %" +
+                    temp.beginlabel + ", label %" +
                     temp.endlabel;
       littletemplabel=temp;
       cout<<base<<endl;
@@ -650,14 +590,14 @@ void semanticanalysis1(struct node *T, int level) {
       littletemplabel.beginlabel = to_string(counter - 1) + "beginand";
       littletemplabel.endlabel = to_string(counter - 1) + "endand";
       semanticanalysis1(T->ptr[0], level);
-      string base = "br i1 %" + to_string(counter - 1) + ", label " +
-                    temp.beginlabel + ", label " +
+      string base = "br i1 %" + to_string(counter - 1) + ", label %" +
+                    temp.beginlabel + ", label %" +
                     littletemplabel.beginlabel;
       cout << base << endl;
-      cout << "label " + littletemplabel.beginlabel+" :" << endl;
+      cout << "label %" + littletemplabel.beginlabel+":" << endl;
       semanticanalysis1(T->ptr[1], level);
-      base = "br i1 %" + to_string(counter - 1) + ", label " +
-                    temp.beginlabel + ", label " +
+      base = "br i1 %" + to_string(counter - 1) + ", label %" +
+                    temp.beginlabel + ", label %" +
                     temp.endlabel;
       littletemplabel=temp;
       cout<<base<<endl;
