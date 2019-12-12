@@ -7,6 +7,7 @@ string ifloat = "float";
 string i8 = "i8";
 string i1 = "i1";
 string ilabel = "label";
+int fll;
 vector<node> semantictable1;
 struct tempnode {
   int tempid;
@@ -259,7 +260,7 @@ void semanticanalysis1(struct node *T, int level) {
             little1.tempid = counter++;
             littletempnode.tempid = counter - 1;
             semantictable1.push_back(little1);
-            little1.tempid = -1;
+            // little1.tempid = -1;
             string base = "%";
             base += to_string((counter - 1));
             if (little1.type == FLOAT_) {
@@ -276,7 +277,14 @@ void semanticanalysis1(struct node *T, int level) {
             cout << base << endl;
             base.clear();
             base += "store ";
-            if (tttemp == CHAR_) {
+            if (t->ptr[0]->ptr[1]->kind == CHAR_) {
+              base += i8 + " " + to_string(t->ptr[0]->ptr[1]->type_char) + ", ";
+            } else if (t->ptr[0]->ptr[1]->kind == INT_) {
+              base += i32 + " " + to_string(t->ptr[0]->ptr[1]->type_int) + ", ";
+            } else if (t->ptr[0]->ptr[1]->kind == FLOAT_) {
+              base += ifloat + " " + to_string(t->ptr[0]->ptr[1]->type_float) +
+                      ", ";
+            } else if (tttemp == CHAR_) {
               base += i8 + " %" + to_string(counter - 2) + ", ";
             } else if (tttemp == INT_) {
               base += i32 + " %" + to_string(counter - 2) + ", ";
@@ -308,7 +316,7 @@ void semanticanalysis1(struct node *T, int level) {
       little1.father = 0;
       semanticanalysis1(T->ptr[2], level); //继续遍历其他
       break;
-    case FUNC_DEF:
+    case FUNC_DEF: {
       little1.level = level;
       little1.is_func = 2;                 //函数加结构体
       semanticanalysis1(T->ptr[0], level); //函数类型
@@ -320,6 +328,33 @@ void semanticanalysis1(struct node *T, int level) {
       littletempnode.ii = ilabel;
       temptable.push_back(littletempnode);
       cout << "{" << endl;
+      //为参数换名
+      node *t = T->ptr[1]->ptr[0];
+      while (t) {
+        int tempi = declare_check11(*(t->ptr[0]->ptr[1]));
+        // cout<<semantictable1[tempi].type_id<<endl;
+        string base = "%" + to_string(counter++) + " = alloca ";
+        string basestore = "store ";
+        if (semantictable1[tempi].type == CHAR_) {
+          base += i8 + ", align 1";
+          basestore += i8 + " %" + to_string(semantictable1[tempi].tempid) +
+                       ", " + i8 + " *%" + to_string(counter - 1) + ", align 1";
+        } else if (semantictable1[tempi].type == INT_) {
+          base += i32 + ", align 4";
+          basestore += i32 + " %" + to_string(semantictable1[tempi].tempid) +
+                       ", " + i32 + " *%" + to_string(counter - 1) +
+                       ", align 4";
+        } else if (semantictable1[tempi].type == CHAR_) {
+          base += ifloat + ", align 4";
+          basestore += ifloat + " %" + to_string(semantictable1[tempi].tempid) +
+                       ", " + ifloat + " *%" + to_string(counter - 1) +
+                       ", align 4";
+        }
+        semantictable1[tempi].tempid = counter - 1;
+        cout << base << endl;
+        cout << basestore << endl;
+        t = t->ptr[1];
+      }
       semanticanalysis1(T->ptr[2], level + 1); //函数结构体
       cout << "}" << endl;
       //结束后counter清零
@@ -329,7 +364,12 @@ void semanticanalysis1(struct node *T, int level) {
       little1.level_father = level + 1;
       little1.father = 0;
       semanticanalysis1(T->ptr[3], level); //继续遍历其他
+      if (!fll) {
+        cout << "declare i32 @putchar(i8)" << endl;
+        fll = 1;
+      }
       break;
+    }
     case FUNC_DEC: {
       strcpy(little1.type_id, T->type_id);
       little1.id = ++id1;
@@ -456,30 +496,36 @@ void semanticanalysis1(struct node *T, int level) {
         }
       }
       cout << base << endl;
+      counter+=1;
       break;
     }
     case IF_THEN_: {
-      if(T->ptr[0]->kind==NOT_||T->ptr[0]->kind==AND_||T->ptr[0]->kind==OR_){
-        templabel temp=littletemplabel;
-        littletemplabel.begin=1;
-        littletemplabel.end=1;
-        littletemplabel.beginlabel=to_string(counter - 1) + "begin";
-        littletemplabel.endlabel = to_string(counter - 1) + "end";
-        semanticanalysis1(T->ptr[0],level);
-        string base="label %"+littletemplabel.beginlabel+":";
-        cout<<base<<endl;
-        semanticanalysis1(T->ptr[1],level+1);
-        base="label %"+littletemplabel.endlabel+":";
-        cout<<base<<endl;
-        littletemplabel=temp;
-      }else{
-        string base1=to_string(counter-1)+"begin";
-        string base2=to_string(counter-1)+"end";
-        semanticanalysis1(T->ptr[0],level);
-        cout<<"br i1 %"+to_string(counter-1)+", label "+base1+", label "+base2<<endl;
-        cout<<"label %"+base1<<endl;
-        semanticanalysis1(T->ptr[1],level+1);
-        cout<<"label %"+base2<<endl;
+      if (T->ptr[0]->kind == NOT_ || T->ptr[0]->kind == AND_ ||
+          T->ptr[0]->kind == OR_) {
+        templabel temp = littletemplabel;
+        littletemplabel.begin = 1;
+        littletemplabel.end = 1;
+        littletemplabel.beginlabel = "hard" + to_string(counter - 1) + "begin";
+        littletemplabel.endlabel = "hard" + to_string(counter - 1) + "end";
+        semanticanalysis1(T->ptr[0], level);
+        string base = littletemplabel.beginlabel + ":";
+        cout << base << endl;
+        semanticanalysis1(T->ptr[1], level + 1);
+        cout<<"br label %"+littletemplabel.endlabel<<endl;
+        base = littletemplabel.endlabel + ":";
+        cout << base << endl;
+        littletemplabel = temp;
+      } else {
+        string base1 = "hard" + to_string(counter - 1) + "begin";
+        string base2 = "hard" + to_string(counter - 1) + "end";
+        semanticanalysis1(T->ptr[0], level);
+        cout << "br i1 %" + to_string(counter - 1) + ", label %" + base1 +
+                    ", label %" + base2
+             << endl;
+        cout << base1 +":"<< endl;
+        semanticanalysis1(T->ptr[1], level + 1);
+        cout<<"br label %"+base2<<endl;
+        cout << base2 +":"<< endl;
       }
       little1.level = level;
       little1.level_father = level + 1;
@@ -495,6 +541,52 @@ void semanticanalysis1(struct node *T, int level) {
       little1.level_father = level + 1;
       break;
     case WHILE_: {
+      if (T->ptr[0]->kind == NOT_ || T->ptr[0]->kind == AND_ ||
+          T->ptr[0]->kind == OR_) {
+        templabel temp = littletemplabel;
+        littletemplabel.before = 1;
+        littletemplabel.begin = 1;
+        littletemplabel.end = 1;
+        littletemplabel.beforelabel =
+            "hard" + to_string(counter - 1) + "before";
+        littletemplabel.beginlabel = "hard" + to_string(counter - 1) + "begin";
+        littletemplabel.endlabel = "hard" + to_string(counter - 1) + "end";
+        cout << "br label %" + littletemplabel.beforelabel << endl;
+        cout << littletemplabel.beforelabel << endl;
+        semanticanalysis1(T->ptr[0], level);
+        string base = littletemplabel.beginlabel + ":";
+        cout << base << endl;
+        semanticanalysis1(T->ptr[1], level + 1);
+        cout << "br label %" + littletemplabel.beforelabel << endl;
+        base = littletemplabel.endlabel + ":";
+        cout << base << endl;
+        littletemplabel = temp;
+      } else {
+        templabel temp = littletemplabel;
+        littletemplabel.before = 1;
+        littletemplabel.begin = 1;
+        littletemplabel.end = 1;
+        littletemplabel.beforelabel =
+            "hard" + to_string(counter - 1) + "before";
+        littletemplabel.beginlabel = "hard" + to_string(counter - 1) + "begin";
+        littletemplabel.endlabel = "hard" + to_string(counter - 1) + "end";
+        cout << "br label %" + littletemplabel.beforelabel << endl;
+        cout << littletemplabel.beforelabel + ":" << endl;
+        semanticanalysis1(T->ptr[0], level);
+        cout << "br i1 %" + to_string(counter - 1) + ", label %" +
+                    littletemplabel.beginlabel + ", label %" +
+                    littletemplabel.endlabel
+             << endl;
+        cout << littletemplabel.beginlabel + ":" << endl;
+        semanticanalysis1(T->ptr[1], level + 1);
+        cout << "br label %" + littletemplabel.beforelabel << endl;
+        cout << littletemplabel.endlabel + ":" << endl;
+      }
+
+      little1.level = level;
+      little1.level_father = level + 1;
+      break;
+      /*
       templabel temp = littletemplabel;
       littletemplabel.before = 1;
       littletemplabel.begin = 1;
@@ -511,6 +603,7 @@ void semanticanalysis1(struct node *T, int level) {
       little1.level_father = level + 1;
       littletemplabel = temp;
       break;
+      */
     }
     case BREAK_:
       // if(!whiles){//在遇到不平均开闭作用域时应遇到while节点
@@ -526,21 +619,30 @@ void semanticanalysis1(struct node *T, int level) {
       string base;
       int tttemp = type_check1(T->ptr[1]);
       strcpy(little1.type_id, T->ptr[0]->type_id);
-      int tttid = semantictable1[declare_check11(little1)].tempid;
+      int tttid = declare_check11(little1);
       base += "store ";
-      if (tttemp == CHAR_) {
+      if (T->ptr[1]->kind == CHAR_) {
+        base += i8 + " " + to_string(T->ptr[1]->type_char) + ", ";
+      } else if (T->ptr[1]->kind == INT_) {
+        base += i32 + " " + to_string(T->ptr[1]->type_int) + ", ";
+      } else if (T->ptr[1]->kind == FLOAT_) {
+        base += ifloat + " " + to_string(T->ptr[1]->type_float) + ", ";
+      } else if (tttemp == CHAR_) {
         base += i8 + " %" + to_string(counter - 1) + ", ";
       } else if (tttemp == INT_) {
         base += i32 + " %" + to_string(counter - 1) + ", ";
       } else if (tttemp == FLOAT_) {
         base += ifloat + " %" + to_string(counter - 1) + ", ";
       }
-      if (little1.type == CHAR_) {
-        base += i8 + "* %" + to_string(tttid) + ", align 1";
-      } else if (little1.type == INT_) {
-        base += i32 + "* %" + to_string(tttid) + ", align 4";
-      } else if (little1.type == FLOAT_) {
-        base += ifloat + "* %" + to_string(tttid) + ", align 4";
+      if (semantictable1[tttid].type == CHAR_) {
+        base +=
+            i8 + "* %" + to_string(semantictable1[tttid].tempid) + ", align 1";
+      } else if (semantictable1[tttid].type == INT_) {
+        base +=
+            i32 + "* %" + to_string(semantictable1[tttid].tempid) + ", align 4";
+      } else if (semantictable1[tttid].type == FLOAT_) {
+        base += ifloat + "* %" + to_string(semantictable1[tttid].tempid) +
+                ", align 4";
       }
       cout << base << endl;
       break;
@@ -566,20 +668,18 @@ void semanticanalysis1(struct node *T, int level) {
       littletemplabel.before = 0;
       littletemplabel.begin = 1;
       littletemplabel.end = 1;
-      littletemplabel.beginlabel = to_string(counter - 1) + "beginand";
-      littletemplabel.endlabel = to_string(counter - 1) + "endand";
+      littletemplabel.beginlabel = "hard" + to_string(counter - 1) + "beginand";
+      littletemplabel.endlabel = "hard" + to_string(counter - 1) + "endand";
       semanticanalysis1(T->ptr[0], level);
       string base = "br i1 %" + to_string(counter - 1) + ", label %" +
-                    littletemplabel.beginlabel + ", label %" +
-                    temp.endlabel;
+                    littletemplabel.beginlabel + ", label %" + temp.endlabel;
       cout << base << endl;
-      cout << "label %" + littletemplabel.beginlabel+":" << endl;
+      cout << littletemplabel.beginlabel + ":" << endl;
       semanticanalysis1(T->ptr[1], level);
       base = "br i1 %" + to_string(counter - 1) + ", label %" +
-                    temp.beginlabel + ", label %" +
-                    temp.endlabel;
-      littletemplabel=temp;
-      cout<<base<<endl;
+             temp.beginlabel + ", label %" + temp.endlabel;
+      littletemplabel = temp;
+      cout << base << endl;
       break;
     }
     case OR_: {
@@ -587,20 +687,18 @@ void semanticanalysis1(struct node *T, int level) {
       littletemplabel.before = 0;
       littletemplabel.begin = 1;
       littletemplabel.end = 1;
-      littletemplabel.beginlabel = to_string(counter - 1) + "beginand";
-      littletemplabel.endlabel = to_string(counter - 1) + "endand";
+      littletemplabel.beginlabel = "hard" + to_string(counter - 1) + "beginand";
+      littletemplabel.endlabel = "hard" + to_string(counter - 1) + "endand";
       semanticanalysis1(T->ptr[0], level);
       string base = "br i1 %" + to_string(counter - 1) + ", label %" +
-                    temp.beginlabel + ", label %" +
-                    littletemplabel.beginlabel;
+                    temp.beginlabel + ", label %" + littletemplabel.beginlabel;
       cout << base << endl;
-      cout << "label %" + littletemplabel.beginlabel+":" << endl;
+      cout << littletemplabel.beginlabel + ":" << endl;
       semanticanalysis1(T->ptr[1], level);
       base = "br i1 %" + to_string(counter - 1) + ", label %" +
-                    temp.beginlabel + ", label %" +
-                    temp.endlabel;
-      littletemplabel=temp;
-      cout<<base<<endl;
+             temp.beginlabel + ", label %" + temp.endlabel;
+      littletemplabel = temp;
+      cout << base << endl;
       break;
     }
     case RELOP_: {
@@ -609,7 +707,7 @@ void semanticanalysis1(struct node *T, int level) {
       semanticanalysis1(T->ptr[1], level);
       int tt2 = counter - 1;
       string base = "%" + to_string(counter++) + " = icmp ";
-      string ttt=T->type_id;
+      string ttt = T->type_id;
       if (ttt == "==") {
         base += "eq ";
       } else if (ttt == "<=") {
@@ -704,12 +802,13 @@ void semanticanalysis1(struct node *T, int level) {
     case UMINUS_:
       semanticanalysis1(T->ptr[0], level);
       break;
-    
+
     case ID_: {
       strcpy(little1.type_id, T->type_id);
       int temp = declare_check11(little1);
       little1.type = semantictable1[temp].type;
       string base = "%";
+      /*
       if (semantictable1[temp].level == 0 && semantictable1[temp].father) {
         //参数
         string tempbase = "%";
@@ -739,8 +838,9 @@ void semanticanalysis1(struct node *T, int level) {
         }
         cout << tempbase << endl;
         cout << tempstore << endl;
-      } else if (semantictable1[temp].level == 0 &&
-                 semantictable1[temp].father == 0) {
+      } else
+      */
+      if (semantictable1[temp].level == 0 && semantictable1[temp].father == 0) {
         base += to_string(counter++) + " = load ";
         if (semantictable1[temp].type == CHAR_) {
           base += i8 + "," + i8 + "* @" + (semantictable1[temp].type_id) +
@@ -775,55 +875,55 @@ void semanticanalysis1(struct node *T, int level) {
       break;
     case CHAR_:
       break;
-    case FUNC_CALL:{
+    case FUNC_CALL: {
       semanticanalysis1(T->ptr[0], level);
 
       strcpy(little1.type_id, T->type_id);
       little1.is_func = 3;
-      int temptype=declare_check1(little1);
+      int temptype = declare_check1(little1);
 
-      string base="%"+to_string(counter++)+" = call ";
-      if(temptype==CHAR_){
-        base+=i8;
-      }else if(temptype==INT_){
-        base+=i32;
-      }else if(temptype==FLOAT_){
-        base+=ifloat;
+      string base = "%" + to_string(counter++) + " = call ";
+      if (temptype == CHAR_) {
+        base += i8;
+      } else if (temptype == INT_) {
+        base += i32;
+      } else if (temptype == FLOAT_) {
+        base += ifloat;
       }
-      base=base+" @"+(T->type_id);
-      cout<<base<<"(";
-      cout<<tempargs;
+      base = base + " @" + (T->type_id);
+      cout << base << "(";
+      cout << tempargs;
       tempargs.clear();
-      cout<<")"<<endl;
+      cout << ")" << endl;
       little1.is_func = 0;
       break;
     }
-    case ARGS_:{
+    case ARGS_: {
       semanticanalysis1(T->ptr[0], level);
-      int temp=T->ptr[0]->kind;
-      if(temp!=INT_&&temp!=CHAR_&&temp!=FLOAT_){
-        if(little1.type==CHAR_){
-          tempargs=i8;
-        }else if(little1.type==INT_){
-          tempargs=i32;
-        }else if(little1.type==FLOAT_){
-          tempargs=ifloat;
+      int temp = T->ptr[0]->kind;
+      if (temp != INT_ && temp != CHAR_ && temp != FLOAT_) {
+        if (little1.type == CHAR_) {
+          tempargs = i8;
+        } else if (little1.type == INT_) {
+          tempargs = i32;
+        } else if (little1.type == FLOAT_) {
+          tempargs = ifloat;
         }
-        tempargs+=" %"+to_string(counter-1);
-      }else {
-        if(temp==CHAR_){
-          tempargs=i8;
-          tempargs+=" %"+to_string(T->ptr[0]->type_char);
-        }else if(temp==INT_){
-          tempargs=i32;
-          tempargs+=" %"+to_string(T->ptr[0]->type_int);
-        }else if(temp==FLOAT_){
-          tempargs=ifloat;
-          tempargs+=" %"+to_string(T->ptr[0]->type_float);
+        tempargs += " %" + to_string(counter - 1);
+      } else {
+        if (temp == CHAR_) {
+          tempargs = i8;
+          tempargs += " " + to_string(T->ptr[0]->type_char);
+        } else if (temp == INT_) {
+          tempargs = i32;
+          tempargs += " " + to_string(T->ptr[0]->type_int);
+        } else if (temp == FLOAT_) {
+          tempargs = ifloat;
+          tempargs += " " + to_string(T->ptr[0]->type_float);
         }
       }
-      if(T->ptr[1])
-      tempargs+=", ";
+      if (T->ptr[1])
+        tempargs += ", ";
       semanticanalysis1(T->ptr[1], level);
       break;
     }

@@ -15,15 +15,16 @@ hard2beginand:
 br i1 %6, label %hard2begin, label %hard2end
 hard2begin:
 ret i32 1
+br label %hard2end
 hard2end:
-%7 = load i32,i32* %2, align 4
-%8 = sub i32 %7, 1
-%9 = call i32 @fibo(i32 %8)
-%10 = load i32,i32* %2, align 4
-%11 = sub i32 %10, 2
-%12 = call i32 @fibo(i32 %11)
-%13 = add i32 %9, %12
-ret i32 %13
+%8 = load i32,i32* %2, align 4
+%9 = sub i32 %8, 1
+%10 = call i32 @fibo(i32 %9)
+%11 = load i32,i32* %2, align 4
+%12 = sub i32 %11, 2
+%13 = call i32 @fibo(i32 %12)
+%14 = add i32 %10, %13
+ret i32 %14
 }
 define i32 @main()
 {

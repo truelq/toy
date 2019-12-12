@@ -17,7 +17,6 @@ int main(){
 		n=fibo(i);
 		putchar('1');
 		i=i+1;
-		break;
 	}
 	return 1;
 }
