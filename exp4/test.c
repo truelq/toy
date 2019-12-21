@@ -4,7 +4,7 @@ int putchar()
 int read(){
 	int a=0
 	int b=getchar()
-	while(b!='-')
+	while(b!=10)
 	{
 		a=a*10+b-'0'
 		b=getchar()
@@ -12,14 +12,22 @@ int read(){
 	return a
 }
 int write(int a){
-	int b
-	while(a>0)
+	int b=1
+	int c
+	while(b<=a)
 	{
-		b=a%10
-		a=a/10
-		b=b+'0'
-		putchar(b)
+		b=b*10
 	}
+	b=b/10
+	while(a>=10)
+	{
+		c=a/b
+		a=a-c*b
+		b=b/10
+		c=c+'0'
+		putchar(c)
+	}
+	putchar(a+'0')
 	putchar(10)
 	return a
 }
@@ -33,8 +41,8 @@ int fibo(int a){
 int main(){
 	int m,n
 	int i=1
-	m=5
-	//write(m)
+	m=read()
+	write(m)
 	while(i<=m)
 	{
 		n=fibo(i)
