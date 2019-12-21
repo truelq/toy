@@ -76,7 +76,7 @@ ExtDefList: {$$=NULL;}
         | WHILE LP Exp  RP ENTERS CompSt ENTERS ExtDefList {allerror=1;sprintf(myerror," Error : wrong  stmt");$$=$8;myyyerror();}
         | error ENTERS ExtDefList {allerror=1;sprintf(myerror," Error : wrong ");$$=$3;myyyerror();}
         ;
-Specifier: TYPE {$$=mknode(TYPE,NULL,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);$$->type=!strcmp($1,"int")?INT_:!strcmp($1,"float")?FLOAT_:CHAR_;}   
+Specifier: TYPE {$$=mknode(TYPE_,NULL,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);$$->type=!strcmp($1,"int")?INT_:!strcmp($1,"float")?FLOAT_:CHAR_;}   
         ;
 DecList:  Dec  {$$=mknode(DEC_LIST,$1,NULL,NULL,NULL,yylineno);}
         | Dec COMMA DecList  {$$=mknode(DEC_LIST,$1,$3,NULL,NULL,yylineno);}

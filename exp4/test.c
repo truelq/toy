@@ -13,9 +13,6 @@ int main(){
 	while(i<=m)
 	{
 		n=fibo(i)
-		/*
-		putchar('1')
-		*/
 		break
 	}
 	return 1

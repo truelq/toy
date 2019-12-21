@@ -14,7 +14,7 @@ int whiles = 0;
 //可以添加一个计算表达式最大类型的函数
 void displaytable() {
   printf("id id type is_func level level_father father\n");
-  for (int i = 0; i < semantictable.size(); ++i) {
+  for (unsigned int i = 0; i < semantictable.size(); ++i) {
     printf("%s\t", semantictable[i].type_id);
     printf("%d ", semantictable[i].id);
     printf("%d ", semantictable[i].type);
@@ -26,9 +26,9 @@ void displaytable() {
   cout << endl;
 }
 int unique_check(node &T) {
-  int openc = 0;
+  // int openc = 0;
   int close = 0;
-  for (int i = 0; i < semantictable.size(); ++i) {
+  for (unsigned int i = 0; i < semantictable.size(); ++i) {
     if (semantictable[i].type == CLOSE_) {
       close += 1;
       continue;
@@ -48,8 +48,8 @@ int unique_check(node &T) {
         if (little.is_func == 0) {
           return 0;
         } else {
-          if (semantictable[i].is_func == 1 && little.is_func != 2 ||
-              semantictable[i].is_func == 2)
+          if (semantictable[i].is_func == 1 &&
+              (little.is_func != 2 || semantictable[i].is_func == 2))
             return 0;
         }
       }
@@ -59,11 +59,10 @@ int unique_check(node &T) {
 }
 int declare_check(node &T) {
   //在其可见作用域查找
-  int openc = 0;
   int close = 0;
-  int temp_level = T.level;
-  int temp_father = T.level_father;
-  for (int i = semantictable.size() - 1; i >= 0; --i) {
+  // int temp_level = T.level;
+  // int temp_father = T.level_father;
+  for ( int i = semantictable.size() - 1; i >= 0; --i) {
     //对于大括号,采取只降不升策略,因为层号变深意味着作用域出问题
     // if(semantictable[i].father==little.father||semantictable[i].father==0)//同是全局变量或同是函数变量且在大括号的可见部分
     {
@@ -84,20 +83,6 @@ int declare_check(node &T) {
           return semantictable[i].type;
         }
       }
-      /*
-      //对于在相同大括号的情况
-      if(semantictable[i].level==temp_level&&semantictable[i].level_father==temp_father)
-          if(!strcmp(little.type_id,semantictable[i].type_id)){
-              return semantictable[i].type;
-          }
-      //对于在大括号的父亲的情况
-      if(semantictable[i].level<temp_level){
-          temp_level-=1;
-          temp_father=semantictable[i].level_father;
-          if(!strcmp(little.type_id,semantictable[i].type_id))
-              return semantictable[i].type;
-      }
-      */
     }
     if (semantictable[i].is_func) {
       if (!strcmp(T.type_id, semantictable[i].type_id))
@@ -129,7 +114,7 @@ int break_check(node &T) {
   int flag = 0;
   vector<int> ttt;
   int ccc = 0;
-  for (int i = 0; i < semantictable.size(); ++i) {
+  for (unsigned int i = 0; i < semantictable.size(); ++i) {
     if (semantictable[i].type == WHILE_) {
       flag += 1;
       ccc += 1;
@@ -156,7 +141,7 @@ int break_check(node &T) {
 int args_check(node *T) {
   int flag = 0;
   int fa_id = 0;
-  for (int i = 0; i < semantictable.size(); ++i) {
+  for (unsigned int i = 0; i < semantictable.size(); ++i) {
     //为了解决递归的问题只要声明了就可以
     if (!flag && semantictable[i].is_func &&
         !strcmp(semantictable[i].type_id, little.type_id)) {
@@ -200,7 +185,7 @@ void semanticanalysis(struct node *T, int level) {
       semanticanalysis(T->ptr[1], level); //去设置变量id
       semanticanalysis(T->ptr[2], level); //继续遍历其他
       break;
-    case TYPE:
+    case TYPE_:
       little.type = T->type;
       break;
     case DEC_LIST:
@@ -223,7 +208,7 @@ void semanticanalysis(struct node *T, int level) {
           //计算表达式的类型,进行语义判断
           //先掠过
           //应当先计算表达式的值
-          //if (true) {
+          // if (true) {
           //  allerror = 1;
           //  printf("Error");
           //}
@@ -473,6 +458,7 @@ void semanticanalysis(struct node *T, int level) {
     case JGE:
     case EQ:
     case NEQ:
+    default:
       break;
     }
   }

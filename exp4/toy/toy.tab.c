@@ -1614,7 +1614,7 @@ yyreduce:
 
   case 14:
 #line 79 "toy.y" /* yacc.c:1646  */
-    {(yyval.ptr)=mknode(TYPE,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));(yyval.ptr)->type=!strcmp((yyvsp[0].type_id),"int")?INT_:!strcmp((yyvsp[0].type_id),"float")?FLOAT_:CHAR_;}
+    {(yyval.ptr)=mknode(TYPE_,NULL,NULL,NULL,NULL,yylineno);strcpy((yyval.ptr)->type_id,(yyvsp[0].type_id));(yyval.ptr)->type=!strcmp((yyvsp[0].type_id),"int")?INT_:!strcmp((yyvsp[0].type_id),"float")?FLOAT_:CHAR_;}
 #line 1619 "toy.tab.c" /* yacc.c:1646  */
     break;
 

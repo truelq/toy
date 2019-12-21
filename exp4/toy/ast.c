@@ -24,7 +24,7 @@ void display(struct node *T, int indent) { //对抽象语法树的先根遍历
       display(T->ptr[2], indent);
       display(T->ptr[3], indent);
       break;
-    case TYPE:
+    case TYPE_:
       printf("%*c类型： %s\n", indent, ' ', T->type_id);
       break;
     case FUNC_DECLARE:
@@ -64,7 +64,7 @@ void display(struct node *T, int indent) { //对抽象语法树的先根遍历
       printf("%*c表达式语句：\n", indent, ' ');
       display(T->ptr[0], indent + 3);
       break;
-    case RETURN:
+    case RETURN_:
       printf("%*c返回语句：\n", indent, ' ');
       display(T->ptr[0], indent + 3);
       break;
@@ -182,6 +182,7 @@ void display(struct node *T, int indent) { //对抽象语法树的先根遍历
       //                  display(T,indent+3);
       printf("\n");
       break;
+    default: break;
     }
   }
 }

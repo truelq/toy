@@ -34,7 +34,7 @@ int id1;
 int counter;
 void displaytable1() {
   printf("id id type is_func level level_father father\n");
-  for (int i = 0; i < semantictable1.size(); ++i) {
+  for (unsigned int i = 0; i < semantictable1.size(); ++i) {
     printf("%s\t", semantictable1[i].type_id);
     printf("%d ", semantictable1[i].id);
     printf("%d ", semantictable1[i].type);
@@ -46,9 +46,9 @@ void displaytable1() {
   cout << endl;
 }
 int unique_check1(node &T) {
-  int openc = 0;
+  // int openc = 0;
   int close = 0;
-  for (int i = 0; i < semantictable1.size(); ++i) {
+  for (unsigned int i = 0; i < semantictable1.size(); ++i) {
     if (semantictable1[i].type == CLOSE_) {
       close += 1;
       continue;
@@ -68,8 +68,8 @@ int unique_check1(node &T) {
         if (T.is_func == 0) {
           return 0;
         } else {
-          if (semantictable1[i].is_func == 1 && T.is_func != 2 ||
-              semantictable1[i].is_func == 2)
+          if (semantictable1[i].is_func == 1 &&
+              (T.is_func != 2 || semantictable1[i].is_func == 2))
             return 0;
         }
       }
@@ -79,10 +79,10 @@ int unique_check1(node &T) {
 }
 int declare_check1(node &T) {
   //在其可见作用域查找
-  int openc = 0;
+  // int openc = 0;
   int close = 0;
-  int temp_level = T.level;
-  int temp_father = T.level_father;
+  // int temp_level = T.level;
+  // int temp_father = T.level_father;
   for (int i = semantictable1.size() - 1; i >= 0; --i) {
     //对于大括号,采取只降不升策略,因为层号变深意味着作用域出问题
     // if(semantictable1[i].father==little.father||semantictable1[i].father==0)//同是全局变量或同是函数变量且在大括号的可见部分
@@ -114,10 +114,10 @@ int declare_check1(node &T) {
 }
 int declare_check11(node &T) {
   //在其可见作用域查找
-  int openc = 0;
+  // int openc = 0;
   int close = 0;
-  int temp_level = T.level;
-  int temp_father = T.level_father;
+  // int temp_level = T.level;
+  // int temp_father = T.level_father;
   for (int i = semantictable1.size() - 1; i >= 0; --i) {
     //对于大括号,采取只降不升策略,因为层号变深意味着作用域出问题
     // if(semantictable1[i].father==little.father||semantictable1[i].father==0)//同是全局变量或同是函数变量且在大括号的可见部分
@@ -166,7 +166,7 @@ int type_check1(node *T) {
 }
 
 void codeGen(struct node *T, int level) {
-  int temp;
+  // int temp;
   struct node *t = NULL;
   if (T) {
     // printf("1%d",T->kind);
@@ -180,7 +180,7 @@ void codeGen(struct node *T, int level) {
       codeGen(T->ptr[1], level); //去设置变量id
       codeGen(T->ptr[2], level); //继续遍历其他
       break;
-    case TYPE:
+    case TYPE_:
       little1.type = T->type;
       break;
     case DEC_LIST:
@@ -308,7 +308,7 @@ void codeGen(struct node *T, int level) {
 
     case FUNC_DECLARE: //函数声明
       little1.level = level;
-      little1.is_func = 1;                 //表示为函数
+      little1.is_func = 1;       //表示为函数
       codeGen(T->ptr[0], level); //函数类型
       codeGen(T->ptr[1], level); //函数id和参数
       //继承属性
@@ -318,7 +318,7 @@ void codeGen(struct node *T, int level) {
       break;
     case FUNC_DEF: {
       little1.level = level;
-      little1.is_func = 2;                 //函数加结构体
+      little1.is_func = 2;       //函数加结构体
       codeGen(T->ptr[0], level); //函数类型
       codeGen(T->ptr[1], level); //函数id和参数
       little1.is_func = 0;
