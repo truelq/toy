@@ -1,4 +1,5 @@
 int _a,b,c
+int read()
 int fibo(int a){
 	a=1
 	if(a==1||a==2)
@@ -10,6 +11,7 @@ int fibo(int a){
 int main(){
 	int m,n
 	int i=1
+	m=read()
 	while(i<=m)
 	{
 		n=fibo(i)
