@@ -41,7 +41,7 @@ extern int yylex(void);
 %token <type_float> FLOAT         //指定ID的语义值是type_float，有词法分析得到的float
 %token <type_char> CHAR
 %token LP RP LC RC SEMI COMMA ENTER  //用bison对该文件编译时，带参数-d，生成的exp.tab.h中给这些单词进行编码，可在lex.l中包含parser.tab.h使用这些单词种类码
-%token PLUS MINUS STAR DIV ASSIGNOP AND OR NOT IF BREAK ELSE WHILE RETURN PLUSASS MINUSASS STARASS DIVASS PLUSPLUS MINUSMINUS
+%token PLUS MINUS STAR DIV MOD ASSIGNOP AND OR NOT IF BREAK ELSE WHILE RETURN PLUSASS MINUSASS STARASS DIVASS PLUSPLUS MINUSMINUS
 //由低到高的定义优先级
 
 %left COMMA
@@ -51,7 +51,7 @@ extern int yylex(void);
 %left AND
 %left RELOP//比较运算内部暂不定义优先级
 %left PLUS MINUS
-%left STAR DIV
+%left STAR DIV MOD
 %right UMINUS NOT UPLUSPLUS UMINUSMINUS
 %left PLUSPLUS MINUSMINUS
 
@@ -137,6 +137,7 @@ Exp:      Exp ASSIGNOP Exp {$$=mknode(ASSIGNOP_,$1,$3,NULL,NULL,yylineno);strcpy
         | Exp MINUS Exp {$$=mknode(MINUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"sub");}
         | Exp STAR Exp  {$$=mknode(STAR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"mul");}
         | Exp DIV Exp   {$$=mknode(DIV_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"udiv");}
+        | Exp MOD Exp   {$$=mknode(MOD_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"urem");}
         | LP Exp RP     {$$=$2;}
         | MINUS Exp %prec UMINUS   {$$=mknode(UMINUS_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UMINUS");}//这里利用BISON %prec表示和UMINUS同优先级 相当于虚拟出一个运算符
         | NOT Exp       {$$=mknode(NOT_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"NOT");}

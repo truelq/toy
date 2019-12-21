@@ -979,7 +979,7 @@ YY_RULE_SETUP
 case 28:
 YY_RULE_SETUP
 #line 65 "toy.l"
-{}
+{return MOD;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP

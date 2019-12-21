@@ -47,6 +47,7 @@ enum node_kind {
   MINUS_,
   STAR_,
   DIV_,
+  MOD_,
   UPLUSPLUS_,
   UMINUSMINUS_,
   PLUSPLUS_,

@@ -62,7 +62,7 @@ float  ([0-9]*\.[0-9]+)|([0-9]+\.)
 "-"			{return MINUS;}
 "*"			{return STAR;}
 "/"			{return DIV;}
-"%"			{}
+"%"			{return MOD;}
 "&&"        {return AND;}
 "||"		{return OR;}
 "!"			{return NOT;}

@@ -407,6 +407,7 @@ void semanticanalysis(struct node *T, int level) {
     case MINUS_:
     case STAR_:
     case DIV_:
+    case MOD_:
       semanticanalysis(T->ptr[0], level);
       semanticanalysis(T->ptr[1], level);
       break;

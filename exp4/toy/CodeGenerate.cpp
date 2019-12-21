@@ -150,7 +150,7 @@ int declare_check11(node &T) {
 int type_check1(node *T) {
   if (T == NULL)
     return 0;
-  if (T->kind == ID_) {
+  if (T->kind == ID_||T->kind == FUNC_CALL) {//注意啊,哭死
     struct node tempp = *T;
     strcpy(tempp.type_id, T->type_id);
     return declare_check1(tempp);
@@ -183,7 +183,7 @@ void codeGen(struct node *T, int level) {
     case TYPE_:
       little1.type = T->type;
       break;
-    case DEC_LIST:
+    case DEC_LIST: {
       t = T;
       while (t) { //先不处理表达式
         if (t->ptr[0]->kind == ID_) {
@@ -228,7 +228,6 @@ void codeGen(struct node *T, int level) {
           }
         } else if (t->ptr[0]->kind == ASSIGNOP_) {
           //计算表达式的类型,进行语义判断
-          //先掠过
           //应当先计算表达式的值
           codeGen(t->ptr[0]->ptr[1], level);
           int tttemp = type_check1(t->ptr[0]->ptr[1]);
@@ -305,7 +304,7 @@ void codeGen(struct node *T, int level) {
         t = t->ptr[1];
       }
       break;
-
+    }
     case FUNC_DECLARE: //函数声明
       little1.level = level;
       little1.is_func = 1;       //表示为函数
@@ -365,15 +364,18 @@ void codeGen(struct node *T, int level) {
       little1.father = 0;
       codeGen(T->ptr[3], level); //继续遍历其他
       if (!fll) {
-        cout << "declare i32 @putchar(i8)" << endl;
+        cout << "declare i32 @getchar()" << endl;
+        cout << "declare i32 @putchar(i32)" << endl;
         fll = 1;
       }
       break;
     }
     case FUNC_DEC: {
+      int temp = little1.is_func;
       strcpy(little1.type_id, T->type_id);
       little1.id = ++id1;
       semantictable1.push_back(little1); //函数id保存
+
       string base = "define ";
       if (little1.type == FLOAT_) {
         base += ifloat;
@@ -384,43 +386,48 @@ void codeGen(struct node *T, int level) {
       }
       base += " @";
       base += little1.type_id;
-      cout << base;
-      cout << "(";
+      if (temp != 1)
+        cout << base;
+      if (temp != 1)
+        cout << "(";
       little1.father = little1.id; //临时变量level和函数id相同,但father=id
       little1.level_father = little1.level;
       little1.is_func = 0;
       codeGen(T->ptr[0], level);
       little1.level_father = little1.level;
-      cout << ")" << endl;
+      if (temp != 1)
+        cout << ")" << endl;
       break;
     }
-    case PARAM_LIST:
+    case PARAM_LIST: {
+      int temp = little1.is_func;
       codeGen(T->ptr[0], level); //设置好一个id和类型
-      {
-        string base;
-        if (little1.type == FLOAT_) {
-          base += ifloat;
-          littletempnode.ii = ifloat;
-        } else if (little1.type == INT_) {
-          base += i32;
-          littletempnode.ii = i32;
-        } else if (little1.type == CHAR_) {
-          base += i8;
-          littletempnode.ii = i8;
-        }
-        little1.id = ++id1;
-        little1.tempid = counter++;
-        littletempnode.tempid = counter - 1;
-        semantictable1.push_back(little1);
-        little1.tempid = -1;
-        temptable.push_back(littletempnode);
-        cout << base;
+      string base;
+      if (little1.type == FLOAT_) {
+        base += ifloat;
+        littletempnode.ii = ifloat;
+      } else if (little1.type == INT_) {
+        base += i32;
+        littletempnode.ii = i32;
+      } else if (little1.type == CHAR_) {
+        base += i8;
+        littletempnode.ii = i8;
       }
+      little1.id = ++id1;
+      little1.tempid = counter++;
+      littletempnode.tempid = counter - 1;
+      semantictable1.push_back(little1);
+      little1.tempid = -1;
+      temptable.push_back(littletempnode);
+      if (temp != 1)
+        cout << base;
       if (T->ptr[1])
-        cout << ',';
+        if (temp != 1)
+          cout << ',';
 
       codeGen(T->ptr[1], level);
       break;
+    }
     case PARAM_DEC:
       codeGen(T->ptr[0], level); //设置类型
       strcpy(little1.type_id, T->ptr[1]->type_id);
@@ -753,7 +760,8 @@ void codeGen(struct node *T, int level) {
     case PLUS_:
     case MINUS_:
     case STAR_:
-    case DIV_: {
+    case DIV_:
+    case MOD_: {
       //都是双目运算符
       codeGen(T->ptr[0], level);
       int tt1 = counter - 1;
