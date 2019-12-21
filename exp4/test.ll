@@ -45,17 +45,20 @@ store i32 %7, i32* %3, align 4
 %9 = udiv i32 %8, 10
 store i32 %9, i32* %2, align 4
 %10 = load i32,i32* %3, align 4
-%11 = call i32 @putchar(i32 %10)
+%11 = add i32 %10, 48
+store i32 %11, i32* %3, align 4
+%12 = load i32,i32* %3, align 4
+%13 = call i32 @putchar(i32 %12)
 br label %hard3before
 hard3end:
-%12 = load i32,i32* %2, align 4
-ret i32 %12
+%14 = call i32 @putchar(i32 10)
+%15 = load i32,i32* %2, align 4
+ret i32 %15
 }
 define i32 @fibo(i32)
 {
 %2 = alloca i32, align 4
 store i32 %0, i32 *%2, align 4
-store i32 1, i32* %2, align 4
 %3 = load i32,i32* %2, align 4
 %4 = icmp eq i32 %3,  1
 br i1 %4, label %hard2begin, label %hard2beginand
@@ -82,7 +85,7 @@ define i32 @main()
 %2 = alloca i32, align 4
 %3 = alloca i32, align 4
 store i32 1, i32* %3, align 4
-store i32 3, i32* %1, align 4
+store i32 5, i32* %1, align 4
 br label %hard3before
 hard3before:
 %4 = load i32,i32* %3, align 4
@@ -93,10 +96,11 @@ hard3begin:
 %7 = load i32,i32* %3, align 4
 %8 = call i32 @fibo(i32 %7)
 store i32 %8, i32* %2, align 4
-%9 = call i32 @putchar(i32 49)
-%10 = load i32,i32* %3, align 4
-%11 = add i32 %10, 1
-store i32 %11, i32* %3, align 4
+%9 = load i32,i32* %2, align 4
+%10 = call i32 @write(i32 %9)
+%11 = load i32,i32* %3, align 4
+%12 = add i32 %11, 1
+store i32 %12, i32* %3, align 4
 br label %hard3before
 hard3end:
 ret i32 1

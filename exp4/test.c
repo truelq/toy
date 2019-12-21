@@ -17,12 +17,13 @@ int write(int a){
 	{
 		b=a%10
 		a=a/10
+		b=b+'0'
 		putchar(b)
 	}
+	putchar(10)
 	return a
 }
 int fibo(int a){
-	a=1
 	if(a==1||a==2)
 	{
 		return 1
@@ -32,11 +33,12 @@ int fibo(int a){
 int main(){
 	int m,n
 	int i=1
-	m=3
+	m=5
+	//write(m)
 	while(i<=m)
 	{
 		n=fibo(i)
-		putchar('1')
+		write(n)
 		i=i+1
 	}
 	return 1

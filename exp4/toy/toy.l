@@ -75,7 +75,7 @@ float  ([0-9]*\.[0-9]+)|([0-9]+\.)
 
 [\n]		{yycolumn=1;return ENTER;}
 [ \r\t]		{/*printf("过滤空格等字符\n");*/}
-"//"[.^\n]* 		{}
+"//".*$	{}
 \/\*([^*]|\*+[^/*])*\*+\/	{}
 
 [0-9][a-zA-Z0-9_]* {printf("Error: Illegal ID \"%s\"\t at Line %d\n",yytext,yylineno);\
