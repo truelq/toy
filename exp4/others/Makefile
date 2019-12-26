@@ -3,8 +3,8 @@ LLVM_CXXFLAGS += $(shell $(LLVM_CONFIG) --cxxflags)
 LLVM_LDFLAGS := $(shell $(LLVM_CONFIG) --ldflags)
 LLVM_LIBS = $(shell $(LLVM_CONFIG) --libs bitwriter core support)
 
-llvm_model_src = toy-as.cpp
+llvm_model_src = toy-llc.cpp
 
 
 test_model:
-	g++ $(llvm_model_src) $(LLVM_CXXFLAGS) $(LLVM_LIBS) $(LLVM_LDFLAGS) -lpthread -ldl -o toy-as
+	g++ $(llvm_model_src) $(LLVM_CXXFLAGS) $(LLVM_LIBS) $(LLVM_LDFLAGS) -lpthread -ldl -o toy-llc
