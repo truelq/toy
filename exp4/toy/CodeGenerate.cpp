@@ -343,7 +343,7 @@ void codeGen(struct node *T, int level) {
           basestore += i32 + " %" + to_string(semantictable1[tempi].tempid) +
                        ", " + i32 + " *%" + to_string(counter - 1) +
                        ", align 4";
-        } else if (semantictable1[tempi].type == CHAR_) {
+        } else if (semantictable1[tempi].type == FLOAT_) {
           base += ifloat + ", align 4";
           basestore += ifloat + " %" + to_string(semantictable1[tempi].tempid) +
                        ", " + ifloat + " *%" + to_string(counter - 1) +

@@ -1,5 +1,5 @@
 	.text
-	.file	"test.ll"
+	.file	"ttt.ll"
 	.globl	read                    # -- Begin function read
 	.p2align	4, 0x90
 	.type	read,@function
@@ -98,41 +98,35 @@ write:                                  # @write
 	.size	write, .Lfunc_end1-write
 	.cfi_endproc
                                         # -- End function
-	.globl	fibo                    # -- Begin function fibo
+	.globl	test                    # -- Begin function test
 	.p2align	4, 0x90
-	.type	fibo,@function
-fibo:                                   # @fibo
+	.type	test,@function
+test:                                   # @test
 	.cfi_startproc
 # %bb.0:
-	pushq	%rbx
-	.cfi_def_cfa_offset 16
-	subq	$16, %rsp
-	.cfi_def_cfa_offset 32
-	.cfi_offset %rbx, -16
-	movl	%edi, 12(%rsp)
-	cmpl	$1, %edi
-	je	.LBB2_2
-# %bb.1:                                # %hard2beginand
-	cmpl	$2, 12(%rsp)
-	jne	.LBB2_4
-.LBB2_2:                                # %hard2begin
-	movl	$1, %eax
-	jmp	.LBB2_3
-.LBB2_4:                                # %hard2end
-	movl	12(%rsp), %edi
-	decl	%edi
-	callq	fibo
-	movl	%eax, %ebx
-	movl	12(%rsp), %edi
-	addl	$-2, %edi
-	callq	fibo
-	addl	%ebx, %eax
-.LBB2_3:                                # %hard2begin
-	addq	$16, %rsp
-	popq	%rbx
+	movl	%edi, -4(%rsp)
+	movl	$1, -8(%rsp)
+	movl	$1, -12(%rsp)
+	jmp	.LBB2_1
+	.p2align	4, 0x90
+.LBB2_2:                                # %hard4begin
+                                        #   in Loop: Header=BB2_1 Depth=1
+	movl	-8(%rsp), %eax
+	movl	-12(%rsp), %ecx
+	imull	%eax, %ecx
+	movl	%ecx, -12(%rsp)
+	incl	%eax
+	movl	%eax, -8(%rsp)
+.LBB2_1:                                # %hard4before
+                                        # =>This Inner Loop Header: Depth=1
+	movl	-8(%rsp), %eax
+	cmpl	-4(%rsp), %eax
+	jle	.LBB2_2
+# %bb.3:                                # %hard4end
+	movl	-12(%rsp), %eax
 	retq
 .Lfunc_end2:
-	.size	fibo, .Lfunc_end2-fibo
+	.size	test, .Lfunc_end2-test
 	.cfi_endproc
                                         # -- End function
 	.globl	main                    # -- Begin function main
@@ -153,7 +147,7 @@ main:                                   # @main
 .LBB3_2:                                # %hard6begin
                                         #   in Loop: Header=BB3_1 Depth=1
 	movl	12(%rsp), %edi
-	callq	fibo
+	callq	test
 	movl	%eax, 20(%rsp)
 	movl	%eax, %edi
 	callq	write

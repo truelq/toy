@@ -84,3 +84,4 @@ void display(struct node *T, int indent);
 void semanticanalysis(struct node *T, int level);
 void codeGen(struct node *T, int level);
 int toy_as(string name);
+int toy_llc(int argc,char* argv[]);

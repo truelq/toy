@@ -173,6 +173,12 @@ int main(int argc, char *argv[]){
         codeGen(allptr,0);
         fclose(tt);
         toy_as(temp);
+        //char argvv[2][10];
+        //strcpy(argvv[0],"llc");
+        //temp[temp.size()-2]='b';
+        //temp[temp.size()-1]='c';
+        //strcpy(argvv[1],temp.data());
+        //toy_llc(2,(char **)argvv);
         }
 	return 0;
 }
