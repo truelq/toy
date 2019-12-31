@@ -1,11 +1,8 @@
-@_a = common global i32 0, align 4
 @b = common global i32 0, align 4
-@c = common global i32 0, align 4
 define i32 @fibo(i32)
 {
 %2 = alloca i32, align 4
 store i32 %0, i32 *%2, align 4
-store i32 1, i32* %2, align 4
 %3 = load i32,i32* %2, align 4
 %4 = icmp eq i32 %3,  1
 br i1 %4, label %hard2begin, label %hard2beginand
@@ -42,10 +39,12 @@ hard3begin:
 %7 = load i32,i32* %3, align 4
 %8 = call i32 @fibo(i32 %7)
 store i32 %8, i32* %2, align 4
-%9 = call i32 @putchar(i8 49)
-br label %hard3end
+%9 = load i32,i32* %3, align 4
+%10 = add i32 %9, 1
+store i32 %10, i32* %3, align 4
 br label %hard3before
 hard3end:
 ret i32 1
 }
-declare i32 @putchar(i8)
+declare i32 @getchar()
+declare i32 @putchar(i32)

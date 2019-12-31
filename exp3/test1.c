@@ -1,6 +1,5 @@
-int _a,b,c
+int b
 int fibo(int a){
-	a=1
 	if(a==1||a==2)
 	{
 		return 1
@@ -13,8 +12,7 @@ int main(){
 	while(i<=m)
 	{
 		n=fibo(i)
-		putchar('1')
-		break
+		i=i+1
 	}
 	return 1
 }
