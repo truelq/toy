@@ -7,11 +7,15 @@
 #include "math.h"
 #include "string.h"
 #include "def.h"
+#include"bits/stdc++.h"
 extern int yylineno;
 extern char *yytext;
 extern FILE *yyin;
 char myerror[255];
+struct node * allptr;
+int allerror;
 void myyyerror();
+using namespace std;
 extern "C"
 {	
 void yyerror(const char* fmt, ...);
@@ -37,7 +41,7 @@ extern int yylex(void);
 %token <type_float> FLOAT         //指定ID的语义值是type_float，有词法分析得到的float
 %token <type_char> CHAR
 %token LP RP LC RC SEMI COMMA ENTER  //用bison对该文件编译时，带参数-d，生成的exp.tab.h中给这些单词进行编码，可在lex.l中包含parser.tab.h使用这些单词种类码
-%token PLUS MINUS STAR DIV ASSIGNOP AND OR NOT IF BREAK ELSE WHILE RETURN PLUSASS MINUSASS STARASS DIVASS PLUSPLUS MINUSMINUS
+%token PLUS MINUS STAR DIV MOD ASSIGNOP AND OR NOT IF BREAK ELSE WHILE RETURN PLUSASS MINUSASS STARASS DIVASS PLUSPLUS MINUSMINUS
 //由低到高的定义优先级
 
 %left COMMA
@@ -47,7 +51,7 @@ extern int yylex(void);
 %left AND
 %left RELOP//比较运算内部暂不定义优先级
 %left PLUS MINUS
-%left STAR DIV
+%left STAR DIV MOD
 %right UMINUS NOT UPLUSPLUS UMINUSMINUS
 %left PLUSPLUS MINUSMINUS
 
@@ -56,7 +60,7 @@ extern int yylex(void);
 
 %%
 
-program: ExtDefList    { display($1,0);semanticanalysis($1,0);}     /*显示语法树*/
+program: ExtDefList    {allptr=$1; }     /*显示语法树*/
         ;
 ExtDefList: {$$=NULL;}
         | Specifier DecList ENTERS ExtDefList {$$=mknode(EXT_VAR_DEF,$1,$2,$4,NULL,yylineno);}
@@ -64,20 +68,20 @@ ExtDefList: {$$=NULL;}
         | Specifier FunDec CompSt ENTERS ExtDefList{$$=mknode(FUNC_DEF,$1,$2,$3,$5,yylineno);}
         | Specifier FunDec ENTERS ExtDefList{$$=mknode(FUNC_DECLARE,$1,$2,$4,NULL,yylineno);}
         
-        | Specifier FunDec CompSt error RC ExtDefList{$$=mknode(FUNC_DECLARE,$1,$2,$6,NULL,yylineno);sprintf(myerror," error in Func def");}
+        | Specifier FunDec CompSt error RC ExtDefList{allerror=1;$$=mknode(FUNC_DECLARE,$1,$2,$6,NULL,yylineno);sprintf(myerror," error in Func def");}
 
-        | RETURN Exp  ENTERS ExtDefList{sprintf(myerror," Error : wrong  stmt");$$=$4;myyyerror();}
-        | IF LP Exp  RP ENTERS CompSt ENTERS ExtDefList %prec LOWER_THEN_ELSE   {sprintf(myerror," Error : wrong  stmt");$$=$8;myyyerror();}
-        | IF LP Exp  RP ENTERS CompSt ENTERS ELSE ENTERS CompSt ENTERS  ExtDefList {sprintf(myerror," Error : wrong  stmt");$$=$12;myyyerror();}
-        | WHILE LP Exp  RP ENTERS CompSt ENTERS ExtDefList {sprintf(myerror," Error : wrong  stmt");$$=$8;myyyerror();}
-        | error ENTERS ExtDefList {sprintf(myerror," Error : wrong ");$$=$3;myyyerror();}
+        | RETURN Exp  ENTERS ExtDefList{allerror=1;sprintf(myerror," Error : wrong  stmt");$$=$4;myyyerror();}
+        | IF LP Exp  RP ENTERS CompSt ENTERS ExtDefList %prec LOWER_THEN_ELSE   {allerror=1;sprintf(myerror," Error : wrong  stmt");$$=$8;myyyerror();}
+        | IF LP Exp  RP ENTERS CompSt ENTERS ELSE ENTERS CompSt ENTERS  ExtDefList {allerror=1;sprintf(myerror," Error : wrong  stmt");$$=$12;myyyerror();}
+        | WHILE LP Exp  RP ENTERS CompSt ENTERS ExtDefList {allerror=1;sprintf(myerror," Error : wrong  stmt");$$=$8;myyyerror();}
+        | error ENTERS ExtDefList {allerror=1;sprintf(myerror," Error : wrong ");$$=$3;myyyerror();}
         ;
-Specifier: TYPE {$$=mknode(TYPE,NULL,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);$$->type=!strcmp($1,"int")?INT_:!strcmp($1,"float")?FLOAT_:CHAR_;}   
+Specifier: TYPE {$$=mknode(TYPE_,NULL,NULL,NULL,NULL,yylineno);strcpy($$->type_id,$1);$$->type=!strcmp($1,"int")?INT_:!strcmp($1,"float")?FLOAT_:CHAR_;}   
         ;
 DecList:  Dec  {$$=mknode(DEC_LIST,$1,NULL,NULL,NULL,yylineno);}
         | Dec COMMA DecList  {$$=mknode(DEC_LIST,$1,$3,NULL,NULL,yylineno);}
-        | COMMA  DecList {sprintf(myerror," too more ','");$$=$2;myyyerror();}
-        | COMMA  {sprintf(myerror," too more ','");$$=NULL;myyyerror();}
+        | COMMA  DecList {allerror=1;sprintf(myerror," too more ','");$$=$2;myyyerror();}
+        | COMMA  {allerror=1;sprintf(myerror," too more ','");$$=NULL;myyyerror();}
         ;
 Dec:      VarDec  {$$=$1;}
         | VarDec ASSIGNOP Exp  {$$=mknode(ASSIGNOP_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"ASSIGNOP");}
@@ -94,7 +98,7 @@ VarList: {$$=NULL;}
 ParamDec: Specifier VarDec {$$=mknode(PARAM_DEC,$1,$2,NULL,NULL,yylineno);}
         ;
 CompSt:   LC ENTERS DefList StmList RC {$$=mknode(COMP_STM,$3,$4,NULL,NULL,yylineno);}
-        | error RC {sprintf(myerror," big error in Conmpst");$$=NULL;}
+        | error RC {allerror=1;sprintf(myerror," big error in Conmpst");$$=NULL;}
         ;
 DefList: {$$=NULL; }
         | Specifier DecList ENTERS DefList {$$=mknode(VAR_DEF,$1,$2,$4,NULL,yylineno);}
@@ -110,9 +114,9 @@ Stmt:     Exp ENTERS {$$=mknode(EXP_STMT,$1,NULL,NULL,NULL,yylineno);}
         | WHILE LP Exp RP ENTERS CompSt ENTERS {$$=mknode(WHILE_,$3,$6,NULL,NULL,yylineno);}
         | BREAK ENTERS {$$=mknode(BREAK_,NULL,NULL,NULL,NULL,yylineno);}
 
-        | RETURN Exp error ENTERS {$$=mknode(RETURN_,$2,NULL,NULL,NULL,yylineno);}
-        | IF LP Exp error RC ENTERS %prec LOWER_THEN_ELSE   {sprintf(myerror," IF wrong");myyyerror();$$=NULL;}
-        | WHILE LP Exp error RP ENTERS CompSt error ENTERS {sprintf(myerror," WHILE wrong");$$=mknode(WHILE_,$3,$7,NULL,NULL,yylineno);}
+        | RETURN Exp error ENTERS {allerror=1;$$=mknode(RETURN_,$2,NULL,NULL,NULL,yylineno);}
+        | IF LP Exp error RC ENTERS %prec LOWER_THEN_ELSE   {allerror=1;sprintf(myerror," IF wrong");myyyerror();$$=NULL;}
+        | WHILE LP Exp error RP ENTERS CompSt error ENTERS {allerror=1;sprintf(myerror," WHILE wrong");$$=mknode(WHILE_,$3,$7,NULL,NULL,yylineno);}
         ;
 Exp:      Exp ASSIGNOP Exp {$$=mknode(ASSIGNOP_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"ASSIGNOP");}//$$结点type_id空置未用，正好存放运算符
         | Exp PLUSASS Exp   {$$=mknode(PLUSASS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"PLUSASS");}//复合赋值运算
@@ -126,13 +130,14 @@ Exp:      Exp ASSIGNOP Exp {$$=mknode(ASSIGNOP_,$1,$3,NULL,NULL,yylineno);strcpy
         | Exp MINUSMINUS  {$$=mknode(MINUSMINUS_,$1,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"MINUSMINUS");}//这里利用BISON %prec表示和UMINUS同优先级
 
 
-        | Exp AND Exp   {$$=mknode(AND_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"AND");}
-        | Exp OR Exp    {$$=mknode(OR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"OR");}
+        | Exp AND Exp   {$$=mknode(AND_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"and");}
+        | Exp OR Exp    {$$=mknode(OR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"or");}
         | Exp RELOP Exp {$$=mknode(RELOP_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,$2);}  //词法分析关系运算符号自身值保存在$2中
-        | Exp PLUS Exp  {$$=mknode(PLUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"PLUS");}
-        | Exp MINUS Exp {$$=mknode(MINUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"MINUS");}
-        | Exp STAR Exp  {$$=mknode(STAR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"STAR");}
-        | Exp DIV Exp   {$$=mknode(DIV_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"DIV");}
+        | Exp PLUS Exp  {$$=mknode(PLUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"add");}
+        | Exp MINUS Exp {$$=mknode(MINUS_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"sub");}
+        | Exp STAR Exp  {$$=mknode(STAR_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"mul");}
+        | Exp DIV Exp   {$$=mknode(DIV_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"udiv");}
+        | Exp MOD Exp   {$$=mknode(MOD_,$1,$3,NULL,NULL,yylineno);strcpy($$->type_id,"urem");}
         | LP Exp RP     {$$=$2;}
         | MINUS Exp %prec UMINUS   {$$=mknode(UMINUS_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"UMINUS");}//这里利用BISON %prec表示和UMINUS同优先级 相当于虚拟出一个运算符
         | NOT Exp       {$$=mknode(NOT_,$2,NULL,NULL,NULL,yylineno);strcpy($$->type_id,"NOT");}
@@ -141,7 +146,7 @@ Exp:      Exp ASSIGNOP Exp {$$=mknode(ASSIGNOP_,$1,$3,NULL,NULL,yylineno);strcpy
         | INT           {$$=mknode(INT_,NULL,NULL,NULL,NULL,yylineno);$$->type_int=$1;$$->type=INT_;}
         | FLOAT         {$$=mknode(FLOAT_,NULL,NULL,NULL,NULL,yylineno);$$->type_float=$1;$$->type=FLOAT_;}
         | CHAR          {$$=mknode(CHAR_,NULL,NULL,NULL,NULL,yylineno);$$->type_char=$1;$$->type=CHAR_;}
-        | error    {sprintf(myerror," error in Exp");$$=NULL;myyyerror();}
+        | error    {allerror=1;sprintf(myerror," error in Exp");$$=NULL;myyyerror();}
         ;
 Args:   {$$=NULL;}
         | Exp COMMA Args {$$=mknode(ARGS_,$1,$3,NULL,NULL,yylineno);}
@@ -150,12 +155,16 @@ Args:   {$$=NULL;}
 ENTERS:   ENTER {}
         | ENTER ENTERS {}
 %%
-
 int main(int argc, char *argv[]){
 	yyin=fopen(argv[1],"r");
 	if (!yyin) return 1;
 	yylineno=1;
+        allptr=NULL;
+        allerror=0;
 	yyparse();
+        //display(allptr,0);
+        if(!allerror)
+        semanticanalysis(allptr,0);
 	return 0;
 }
 
