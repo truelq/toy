@@ -1,6 +1,8 @@
 在编写后面实验时,发现的前面的少许错误在后面改正,没有改前面
 源文件主要有ast.c def.h toy.l toy.y SemanticAnalysis.cpp CodeGenerate.cpp Makefile 
 最终生成文件为toy
+实验环境 linux或Windows下WSL llvm-6.0 
+llvm地址 llvm.org
 -------------------------------------------------------------------
 文件内容
 exp1:
