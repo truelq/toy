@@ -3,6 +3,7 @@
 #include "string.h"
 #include "def.h"
 int yycolumn=1;
+extern int allerror;
 #define YY_USER_ACTION    	yylloc.first_line=yylloc.last_line=yylineno; \
 	yylloc.first_column=yycolumn;	yylloc.last_column=yycolumn+yyleng-1; yycolumn+=yyleng;
 /*为了获得列号，使用lex提供的YY_USER_ACTION宏，对它重新定义，定义为一个函数，每次在识别成分之前会调用该函数，获得yylloc结构信息，包括first_line、first_column、last_line、last_column。这些信息在之后语法分析错误处理的时候也可以用上，用来定位出错位置。*/
@@ -16,6 +17,11 @@ typedef union {
 	struct node *ptr;
 } YYLVAL;
 #define YYSTYPE yylval
+extern "C"
+{	
+	int yywrap(void);
+	int yylex(void);
+}
 //flex为bison提供行号信息
 %}
 %option yylineno 
@@ -37,6 +43,7 @@ float  ([0-9]*\.[0-9]+)|([0-9]+\.)
 "if"         {return IF;}
 "else"       {return ELSE;}
 "while"      {return WHILE;}
+"break"		{return BREAK;}
 {id}       {strcpy(yylval.type_id,  yytext); return ID;/*由于关键字的形式也符合表示符的规则，所以把关键字的处理全部放在标识符的前面，优先识别*/}
 
 ";"			{return SEMI;}
@@ -56,7 +63,7 @@ float  ([0-9]*\.[0-9]+)|([0-9]+\.)
 "-"			{return MINUS;}
 "*"			{return STAR;}
 "/"			{return DIV;}
-"%"			{}
+"%"			{return MOD;}
 "&&"        {return AND;}
 "||"		{return OR;}
 "!"			{return NOT;}
@@ -69,12 +76,12 @@ float  ([0-9]*\.[0-9]+)|([0-9]+\.)
 
 [\n]		{yycolumn=1;return ENTER;}
 [ \r\t]		{/*printf("过滤空格等字符\n");*/}
-"//".* 		{}
+"//".*$	{}
 \/\*([^*]|\*+[^/*])*\*+\/	{}
 
-[0-9][a-zA-Z0-9_]* {printf("Error: Illegal ID \"%s\"\t at Line %d\n",yytext,yylineno);\
+[0-9][a-zA-Z0-9_]* {allerror=1; printf("Error: Illegal ID \"%s\"\t at Line %d\n",yytext,yylineno);\
 					strcpy(yylval.type_id,  yytext); return ID;/*标识非法id,但是仍旧当做正常id进行分析*/}
-\'[^'\\]$	{printf("Warning: missing terminating ' character at Line %d\n",yylineno);yylval.type_char=yytext[1]; return CHAR;}
+\'[^'\\]$	{allerror=1;printf("Warning: missing terminating ' character at Line %d\n",yylineno);yylval.type_char=yytext[1]; return CHAR;}
 .			{if(yytext[0]=='\''){printf("Error: missing terminating ' character at Line %d\n",yylineno);yylval.type_char=yytext[1]; return CHAR;}
 				else printf("Error: Mysterious character \"%s\"\t at Line %d\n",yytext,yylineno);}
 %%

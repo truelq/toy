@@ -62,24 +62,26 @@ extern int yydebug;
     MINUS = 272,
     STAR = 273,
     DIV = 274,
-    ASSIGNOP = 275,
-    AND = 276,
-    OR = 277,
-    NOT = 278,
-    IF = 279,
-    ELSE = 280,
-    WHILE = 281,
-    RETURN = 282,
-    PLUSASS = 283,
-    MINUSASS = 284,
-    STARASS = 285,
-    DIVASS = 286,
-    PLUSPLUS = 287,
-    MINUSMINUS = 288,
-    UMINUS = 289,
-    UPLUSPLUS = 290,
-    UMINUSMINUS = 291,
-    LOWER_THEN_ELSE = 292
+    MOD = 275,
+    ASSIGNOP = 276,
+    AND = 277,
+    OR = 278,
+    NOT = 279,
+    IF = 280,
+    BREAK = 281,
+    ELSE = 282,
+    WHILE = 283,
+    RETURN = 284,
+    PLUSASS = 285,
+    MINUSASS = 286,
+    STARASS = 287,
+    DIVASS = 288,
+    PLUSPLUS = 289,
+    MINUSMINUS = 290,
+    UMINUS = 291,
+    UPLUSPLUS = 292,
+    UMINUSMINUS = 293,
+    LOWER_THEN_ELSE = 294
   };
 #endif
 
@@ -88,7 +90,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 19 "toy.y" /* yacc.c:1909  */
+#line 26 "toy.y" /* yacc.c:1909  */
 
 	int    type_int;
 	float  type_float;
@@ -96,7 +98,7 @@ union YYSTYPE
 	char   type_id[32];
 	struct node *ptr;
 
-#line 100 "toy.tab.h" /* yacc.c:1909  */
+#line 102 "toy.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

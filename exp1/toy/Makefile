@@ -1,4 +1,5 @@
-toy: toy.l toy.y ast.c
+toy: toy.l toy.y ast.c 
 	bison -d toy.y
 	flex toy.l
-	cc -o $@  lex.yy.c toy.tab.h toy.tab.c def.h ast.c  -lfl
+	g++ -o $@ def.h lex.yy.c toy.tab.h toy.tab.c ast.c  -lpthread -ldl
+	
