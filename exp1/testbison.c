@@ -1,15 +1,8 @@
 int a,,b,c
-int ee=a+b+c
-a=b+c
-{
-	int b
-}
-if( a){
-	a
-}
-int test(int a))
-int fibo(int a){
-	int a
+int main(){
+	int m,n,i
+    i,=1
+    int a
 	int b
 	a=a++b
 	a=a+++
@@ -17,22 +10,6 @@ int fibo(int a){
 	if(a==1 a==2){
 		return 1
 	}
-	return fibo(a-1)+fibo(a-2)
-}
-int main(){
-	int m,n,i
-	m=read()
-	i=1
-    i,=1
-	while(i<=m)
-	{
-		n=fibo(i)
-		write(n)
-	}
-	m=m+n*i+i
-	i+=1
-	++i
-	m=2.333
-	d='c'
+    m=read(
 	return 1
 }

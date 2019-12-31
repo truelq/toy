@@ -103,13 +103,11 @@ void display(struct node *T, int indent) { //对抽象语法树的先根遍历
       display(T->ptr[2], indent + 6); //显示else子句
       break;
     case VAR_DEF:
-      printf("%*cLOCAL VAR_NAME：\n", indent, ' ');
       display(T->ptr[0], indent + 3); //显示变量类型
       display(T->ptr[1], indent + 3); //显示该定义的全部变量名
       display(T->ptr[2], indent);
       break;
     case DEC_LIST:
-      printf("%*cVAR_NAME：\n", indent, ' ');
       T0 = T;
       while (T0) {
         if (T0->ptr[0]->kind == ID_)
@@ -183,7 +181,8 @@ void display(struct node *T, int indent) { //对抽象语法树的先根遍历
       //                  display(T,indent+3);
       printf("\n");
       break;
-    default: break;
+    default:
+      break;
     }
   }
 }

@@ -71,7 +71,6 @@ struct node {
   int level;           //层号
   int type;            //结点对应值的类型
   int pos;             //语法单位所在位置行号
-  int offset;
   int is_func;
   int id; //唯一标识符
   int father;

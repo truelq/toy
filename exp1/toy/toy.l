@@ -9,7 +9,6 @@ extern int allerror;
 /*为了获得列号，使用lex提供的YY_USER_ACTION宏，对它重新定义，定义为一个函数，每次在识别成分之前会调用该函数，获得yylloc结构信息，包括first_line、first_column、last_line、last_column。这些信息在之后语法分析错误处理的时候也可以用上，用来定位出错位置。*/
 typedef union {
 	//flex进行scanner，将数值存入yylval。而bison读取yylval之中的值。
-	//
 	int type_int;
 	float type_float;//这里可能有错
 	int type_char;//int 肯定可以保存char啊
@@ -18,7 +17,7 @@ typedef union {
 } YYLVAL;
 #define YYSTYPE yylval
 extern "C"
-{	
+{ 
 	int yywrap(void);
 	int yylex(void);
 }
@@ -46,7 +45,6 @@ float  ([0-9]*\.[0-9]+)|([0-9]+\.)
 "break"		{return BREAK;}
 {id}       {strcpy(yylval.type_id,  yytext); return ID;/*由于关键字的形式也符合表示符的规则，所以把关键字的处理全部放在标识符的前面，优先识别*/}
 
-";"			{return SEMI;}
 ","			{return COMMA;}
 ">"|"<"|">="|"<="|"=="|"!=" {strcpy(yylval.type_id, yytext);return RELOP;}
 "="			{return ASSIGNOP;}
@@ -82,7 +80,7 @@ float  ([0-9]*\.[0-9]+)|([0-9]+\.)
 [0-9][a-zA-Z0-9_]* {allerror=1; printf("Error: Illegal ID \"%s\"\t at Line %d\n",yytext,yylineno);\
 					strcpy(yylval.type_id,  yytext); return ID;/*标识非法id,但是仍旧当做正常id进行分析*/}
 \'[^'\\]$	{allerror=1;printf("Warning: missing terminating ' character at Line %d\n",yylineno);yylval.type_char=yytext[1]; return CHAR;}
-.			{if(yytext[0]=='\''){printf("Error: missing terminating ' character at Line %d\n",yylineno);yylval.type_char=yytext[1]; return CHAR;}
+.			{allerror=1;if(yytext[0]=='\''){printf("Error: missing terminating ' character at Line %d\n",yylineno);yylval.type_char=yytext[1]; return CHAR;}
 				else printf("Error: Mysterious character \"%s\"\t at Line %d\n",yytext,yylineno);}
 %%
 
